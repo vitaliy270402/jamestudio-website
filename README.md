@@ -1,6 +1,6 @@
 # James Studio Construction
 
-Marketing site for **James Studio Construction** (styled JAMESTUDIO CONSTRUCTION), owned by James Koban, based in DeSoto, TX. It is a static [Astro](https://astro.build) site aimed at local Google leads: phone calls and free-estimate requests.
+Marketing site for **James Studio Construction** (styled JAMESTUDIO CONSTRUCTION), based in DeSoto, TX. It is a static [Astro](https://astro.build) site aimed at local Google leads: phone calls and free-estimate requests.
 
 ```bash
 npm install

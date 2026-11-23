@@ -44,7 +44,7 @@ export const site = {
     "We are insured and give warranty!",
   ],
   description:
-    "James Studio Construction is a home-improvement contractor based in DeSoto, Texas, owned by James Koban, serving DeSoto and the Dallas–Fort Worth area.",
+    "James Studio Construction is a home-improvement contractor based in DeSoto, Texas, serving DeSoto and the Dallas–Fort Worth area.",
 
   phoneDisplay: "(254) 833-7392",
   phoneTel: "+12548337392",

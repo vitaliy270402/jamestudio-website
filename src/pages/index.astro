@@ -4,12 +4,15 @@ import Photo from "../components/Photo.astro";
 import {
   categoryLabel,
   featuredPhotos,
-  heroes,
+  photos,
   storySteps,
 } from "../data/gallery";
 import { serviceGroups, services, site } from "../config/site";
 
-const heroPhoto = heroes().find((photo) => photo.id === "484344220") ?? heroes()[0];
+const heroPhoto = photos.find((photo) => photo.file === "482226989.jpg");
+if (!heroPhoto) {
+  throw new Error("Home hero image is missing: src/assets/gallery/482226989.jpg");
+}
 const featured = featuredPhotos();
 const patio = storySteps("patio");
 const shelves = storySteps("shelves");
@@ -27,7 +30,7 @@ const description =
         src={heroPhoto.src}
         alt={heroPhoto.alt}
         sizes="100vw"
-        widths={[640, 960, 1200]}
+        widths={[720, 960]}
         priority={true}
       />
     </div>

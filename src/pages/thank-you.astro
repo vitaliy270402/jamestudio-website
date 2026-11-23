@@ -1,0 +1,19 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../config/site";
+
+const title = "Estimate request sent | James Studio Construction";
+const description = "Your free estimate request was sent to James Studio Construction.";
+---
+
+<BaseLayout title={title} description={description} noindex={true}>
+  <header class="page-hero">
+    <div class="wrap">
+      <h1>Request sent</h1>
+      <p>Thanks. James will follow up about the project. If it’s urgent, call {site.phoneDisplay}.</p>
+      <p style="margin-top:1rem">
+        <a class="btn btn-orange" href={`tel:${site.phoneTel}`}>Call {site.phoneDisplay}</a>
+      </p>
+    </div>
+  </header>
+</BaseLayout>

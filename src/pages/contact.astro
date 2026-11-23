@@ -1,0 +1,54 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import QuoteForm from "../components/QuoteForm.astro";
+import { formState, site } from "../config/site";
+
+const form = formState();
+const title = "Get a Free Estimate | James Studio Construction";
+const description =
+  "Request a free estimate from James Studio Construction in the Dallas and Fort Worth area. Call (254) 833-7392 or send your name, city, and the service you need.";
+---
+
+<BaseLayout title={title} description={description}>
+  <header class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs">
+        <li><a href="/">Home</a></li>
+        <li aria-hidden="true">/</li>
+        <li>Free estimate</li>
+      </ol>
+      <h1>Get a free estimate</h1>
+      <p>Call, email, or send the project details. James will follow up.</p>
+    </div>
+  </header>
+  <section class="section">
+    <div class="wrap contact-grid">
+      <div>
+        {
+          form.ready ? (
+            <p>Tell us about the project. A photo of the area helps.</p>
+          ) : (
+            <p class="form-note">
+              The online form is not connected yet, so it will not deliver on its own. Call or email,
+              or fill this out and use “Email this request.” Mention a photo if you have one and James
+              can take it from the call.
+            </p>
+          )
+        }
+        <QuoteForm />
+      </div>
+      <aside class="contact-aside">
+        <h2>Talk to James</h2>
+        <p><a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a></p>
+        <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
+        <p>
+          {site.displayArea}
+        </p>
+        <p>
+          <a href={site.facebook.url} rel="noopener noreferrer">{site.facebook.label}</a>
+        </p>
+        <p>{site.tagline}</p>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>

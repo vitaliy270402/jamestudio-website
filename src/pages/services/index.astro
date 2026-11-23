@@ -1,0 +1,46 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { serviceGroups, services, site } from "../../config/site";
+
+const title = `Home Improvement Services in ${site.titlePlace} | James Studio Construction`;
+const description =
+  "Remodels, patios, decks, fencing, roofing, siding, repairs, and water damage mitigation in the Dallas and Fort Worth area.";
+---
+
+<BaseLayout title={title} description={description}>
+  <header class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs">
+        <li><a href="/">Home</a></li>
+        <li aria-hidden="true">/</li>
+        <li>Services</li>
+      </ol>
+      <h1>Services in {site.titlePlace}</h1>
+      <p>{site.serviceAreaLabel}. Insured, with a warranty.</p>
+    </div>
+  </header>
+  <section class="section">
+    <div class="wrap">
+      {
+        serviceGroups.map((group) => (
+          <div class="service-block">
+            <p class="kicker">{group}</p>
+            <ul class="service-grid">
+              {services
+                .filter((service) => service.group === group)
+                .map((service) => (
+                  <li>
+                    <a class="service-card" href={`/services/${service.slug}/`}>
+                      <h2>{service.name}</h2>
+                      <p>{service.summary}</p>
+                      <span>Learn more</span>
+                    </a>
+                  </li>
+                ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

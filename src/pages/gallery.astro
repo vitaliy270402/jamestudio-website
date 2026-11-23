@@ -1,0 +1,177 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Photo from "../components/Photo.astro";
+import { categories, categoryLabel, extraPhotos, photos, storySteps } from "../data/gallery";
+import { site } from "../config/site";
+
+const title = "Project Gallery | James Studio Construction";
+const description =
+  "Photos of James Studio Construction’s remodels, patio covers, fences, decks, roofing, siding, and built-in shelving in the Dallas and Fort Worth area.";
+const all = [...photos, ...extraPhotos];
+const shelves = storySteps("shelves");
+const bathProgress = storySteps("bath-progress");
+---
+
+<BaseLayout title={title} description={description}>
+  <header class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs">
+        <li><a href="/">Home</a></li>
+        <li aria-hidden="true">/</li>
+        <li>Gallery</li>
+      </ol>
+      <h1>Project gallery</h1>
+      <p>
+        Finished work and a few in-progress shots from {site.legalName}. These are James’s own
+        projects, not stock photos.
+      </p>
+    </div>
+  </header>
+
+  <section class="section cream" aria-labelledby="compare-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="compare-heading">Before and after</h2>
+        <p>The same projects, earlier in the work and further along.</p>
+      </div>
+      <h3>Built-in shelving</h3>
+      <div class="compare" style="margin: 0.8rem 0 2rem">
+        {
+          shelves.flatMap((step) =>
+            step.photos.map((photo) => (
+              <figure>
+                <span class="compare-tag">{photo.stepLabel}</span>
+                <div class="frame-fill">
+                  <Photo
+                    src={photo.src}
+                    alt={photo.alt}
+                    sizes="(min-width: 720px) 45vw, 100vw"
+                    widths={[480, 800]}
+                  />
+                </div>
+              </figure>
+            )),
+          )
+        }
+      </div>
+      <h3>Bathroom remodel</h3>
+      <div class="compare" style="margin-top: 0.8rem">
+        {
+          bathProgress.flatMap((step) =>
+            step.photos.map((photo) => (
+              <figure>
+                <span class="compare-tag">{photo.stepLabel}</span>
+                <div class="frame-fill">
+                  <Photo
+                    src={photo.src}
+                    alt={photo.alt}
+                    sizes="(min-width: 720px) 45vw, 100vw"
+                    widths={[480, 800]}
+                  />
+                </div>
+              </figure>
+            )),
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap gallery-browser">
+      <p class="note" style="margin-bottom:0.8rem">Tap a photo to open it larger.</p>
+      <input class="sr-only" type="radio" name="cat" id="cat-all" checked />
+      {categories.map((category) => <input class="sr-only" type="radio" name="cat" id={`cat-${category.id}`} />)}
+      <div class="filters" role="radiogroup" aria-label="Filter projects">
+        <label class="filter" for="cat-all">All</label>
+        {categories.map((category) => <label class="filter" for={`cat-${category.id}`}>{category.label}</label>)}
+      </div>
+      <ul class="photo-grid">
+        {
+          all.map((photo) => (
+            <li class="card photo-card" id={photo.id} data-cat={photo.services.length ? photo.category : "extra"}>
+              <button type="button" class="shot" data-caption={photo.caption}>
+                <div class="frame-fill">
+                  <Photo
+                    src={photo.src}
+                    alt={photo.alt}
+                    sizes="(min-width: 980px) 340px, (min-width: 720px) 45vw, 100vw"
+                    widths={[400, 640, 960]}
+                  />
+                </div>
+                <span class="caption">
+                  {photo.caption}
+                  {photo.services.length > 0 && <span class="cat-tag">{categoryLabel(photo.category)}</span>}
+                </span>
+              </button>
+            </li>
+          ))
+        }
+      </ul>
+      {
+        extraPhotos.length > 0 && (
+          <p class="note">
+            Photos without a caption entry in src/data/gallery.ts are included above. Add an entry
+            to give them a category and description.
+          </p>
+        )
+      }
+    </div>
+  </section>
+
+  <dialog class="lightbox" id="lightbox" aria-label="Project photo">
+    <div class="lightbox-frame">
+      <div class="lightbox-bar">
+        <p data-lightbox-caption></p>
+        <button class="btn btn-ghost-light" type="button" data-lightbox-close>Close</button>
+      </div>
+      <img alt="" data-lightbox-img />
+      <div class="lightbox-nav">
+        <button class="btn btn-ghost-light" type="button" data-lightbox-prev>Previous</button>
+        <button class="btn btn-ghost-light" type="button" data-lightbox-next>Next</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    const dialog = document.querySelector<HTMLDialogElement>("#lightbox");
+    const lightboxImg = document.querySelector<HTMLImageElement>("[data-lightbox-img]");
+    const lightboxCaption = document.querySelector<HTMLElement>("[data-lightbox-caption]");
+    const shots = () =>
+      [...document.querySelectorAll<HTMLButtonElement>(".shot")].filter(
+        (shot) => shot.closest("li")?.getClientRects().length,
+      );
+
+    let index = 0;
+
+    function show(next: number) {
+      const visible = shots();
+      if (!dialog || !lightboxImg || !lightboxCaption || visible.length === 0) return;
+      index = (next + visible.length) % visible.length;
+      const shot = visible[index];
+      const source = shot.querySelector("img");
+      if (!source) return;
+      lightboxImg.src = source.currentSrc || source.src;
+      lightboxImg.alt = source.alt;
+      lightboxCaption.textContent = shot.dataset.caption ?? "";
+      if (!dialog.open) dialog.showModal();
+    }
+
+    document.querySelectorAll<HTMLButtonElement>(".shot").forEach((shot) => {
+      shot.addEventListener("click", () => {
+        const visible = shots();
+        show(visible.indexOf(shot));
+      });
+    });
+
+    document.querySelector("[data-lightbox-close]")?.addEventListener("click", () => dialog?.close());
+    document.querySelector("[data-lightbox-prev]")?.addEventListener("click", () => show(index - 1));
+    document.querySelector("[data-lightbox-next]")?.addEventListener("click", () => show(index + 1));
+    dialog?.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+    dialog?.addEventListener("close", () => {
+      if (lightboxImg) lightboxImg.removeAttribute("src");
+    });
+  </script>
+</BaseLayout>

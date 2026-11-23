@@ -1,0 +1,10 @@
+---
+import { site } from "../config/site";
+
+const onContact = Astro.url.pathname === "/contact/";
+---
+
+<div class="callbar">
+  <a class="btn btn-orange" href={`tel:${site.phoneTel}`}>Call</a>
+  <a class="btn btn-ghost-light" href={onContact ? "#estimate" : "/contact/"}>Get a Free Estimate</a>
+</div>

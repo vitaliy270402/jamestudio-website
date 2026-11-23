@@ -1,0 +1,21 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../config/site";
+---
+
+<BaseLayout
+  title={`Page not found | ${site.legalName}`}
+  description="That page is not on the James Studio Construction site."
+  noindex={true}
+>
+  <header class="page-hero">
+    <div class="wrap">
+      <h1>Page not found</h1>
+      <p>Try the gallery, the service list, or call {site.phoneDisplay}.</p>
+      <p style="margin-top:1rem;display:flex;gap:0.6rem;flex-wrap:wrap">
+        <a class="btn btn-orange" href="/">Home</a>
+        <a class="btn btn-ghost-light" href="/contact/">Get a Free Estimate</a>
+      </p>
+    </div>
+  </header>
+</BaseLayout>

@@ -1,0 +1,324 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Photo from "../components/Photo.astro";
+import {
+  categoryLabel,
+  featuredPhotos,
+  heroes,
+  storySteps,
+} from "../data/gallery";
+import { serviceGroups, services, site } from "../config/site";
+
+const heroPhotos = heroes();
+const featured = featuredPhotos();
+const patio = storySteps("patio");
+const shelves = storySteps("shelves");
+const bathProgress = storySteps("bath-progress");
+const tub = storySteps("tub");
+const title = "James Studio Construction | Remodels in DeSoto, TX";
+const description =
+  "James Studio Construction, owned by James Koban, remodels and repairs homes in DeSoto and the Dallas–Fort Worth area. Call (254) 833-7392 for a free estimate.";
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">{site.address.city}, {site.address.region} · Dallas–Fort Worth</p>
+        <h1>{site.tagline}</h1>
+        <p class="lede">
+          {site.legalName} builds and repairs homes for people in {site.serviceAreaLabel}.
+          Owned by {site.owner}.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-orange" href="/contact/">Get a Free Estimate</a>
+          <a class="btn btn-ghost" href={`tel:${site.phoneTel}`}>Call {site.phoneDisplay}</a>
+        </div>
+        <ul class="trust">
+          <li>Insured</li>
+          <li>Warranty on the work</li>
+          <li>
+            <a href={site.facebook.url} rel="noopener noreferrer">{site.facebook.label}</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-frame">
+          {
+            heroPhotos.map((photo, index) => (
+              <div class="hero-slide">
+                <Photo
+                  src={photo.src}
+                  alt={photo.alt}
+                  sizes="(min-width: 980px) 480px, calc(100vw - 1.5rem)"
+                  widths={[480, 720, 960]}
+                  priority={index === 0}
+                />
+                <p class="hero-caption">{photo.caption}</p>
+              </div>
+            ))
+          }
+        </div>
+        <div class="thumbs" role="radiogroup" aria-label="Featured projects">
+          {
+            heroPhotos.map((photo, index) => (
+              <label class="thumb">
+                <input type="radio" name="hero" checked={index === 0} />
+                <Photo
+                  src={photo.src}
+                  alt=""
+                  sizes="72px"
+                  widths={[96, 160]}
+                  quality={60}
+                />
+                <span class="sr-only">{photo.caption}</span>
+              </label>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="services-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="services-heading">What we do</h2>
+        <p>
+          Remodels, outdoor structures, roofing, siding, and repairs for {site.serviceAreaLabel}.
+        </p>
+      </div>
+      {
+        serviceGroups.map((group) => (
+          <div class="service-block">
+            <p class="kicker">{group}</p>
+            <ul class="service-grid">
+              {services
+                .filter((service) => service.group === group)
+                .map((service) => (
+                  <li>
+                    <a class="service-card" href={`/services/${service.slug}/`}>
+                      <h3>{service.name}</h3>
+                      <p>{service.summary}</p>
+                      <span>Learn more</span>
+                    </a>
+                  </li>
+                ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section cream" aria-labelledby="why-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="why-heading">What you can count on</h2>
+        <p>In James Studio Construction’s own words.</p>
+      </div>
+      <div class="quotes">
+        {
+          site.taglines.map((line) => (
+            <figure class="quote">
+              <blockquote>{line}</blockquote>
+              <figcaption>{site.legalName}</figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="stories-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="stories-heading">Project stories</h2>
+        <p>Real jobs, including a patio that went from a bare slab to a finished cover.</p>
+      </div>
+
+      <article class="story" id="patio">
+        <h3>From slab to finished patio</h3>
+        <p>One covered patio: layout, concrete, posts, framing, then the finished metal roof.</p>
+        <ol class="steps">
+          {
+            patio.map((step) => (
+              <li class="step">
+                <p class="step-label">
+                  <b>{step.step}</b>
+                  {step.label}
+                </p>
+                <div class="step-photos">
+                  {step.photos.map((photo) => (
+                    <figure>
+                      <div class="frame-fill">
+                        <Photo
+                          src={photo.src}
+                          alt={photo.alt}
+                          sizes="(min-width: 980px) 320px, 100vw"
+                          widths={[400, 640, 800]}
+                        />
+                      </div>
+                      <figcaption>{photo.caption}</figcaption>
+                    </figure>
+                  ))}
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </article>
+
+      <article class="story" id="shelves">
+        <h3>Built-in shelving</h3>
+        <p>Floor-to-ceiling shelves, from raw plywood to paint.</p>
+        <div class="pair">
+          {
+            shelves.flatMap((step) =>
+              step.photos.map((photo) => (
+                <figure>
+                  <div class="frame-fill">
+                    <Photo
+                      src={photo.src}
+                      alt={photo.alt}
+                      sizes="(min-width: 720px) 45vw, 100vw"
+                      widths={[480, 720]}
+                    />
+                  </div>
+                  <figcaption>{photo.caption}</figcaption>
+                </figure>
+              )),
+            )
+          }
+        </div>
+      </article>
+
+      <article class="story" id="bathroom-progress">
+        <h3>How it started, and how it's going</h3>
+        <p>A bathroom remodel, from the original room to the demo.</p>
+        <div class="pair">
+          {
+            bathProgress.flatMap((step) =>
+              step.photos.map((photo) => (
+                <figure>
+                  <div class="frame-fill">
+                    <Photo
+                      src={photo.src}
+                      alt={photo.alt}
+                      sizes="(min-width: 720px) 45vw, 100vw"
+                      widths={[480, 720]}
+                    />
+                  </div>
+                  <figcaption>{photo.caption}</figcaption>
+                </figure>
+              )),
+            )
+          }
+        </div>
+      </article>
+
+      <article class="story" id="tub">
+        <h3>Tub replacement</h3>
+        <p>Before and after in one photo.</p>
+        <div class="frame-modest">
+          {
+            tub.flatMap((step) =>
+              step.photos.map((photo) => (
+                <figure>
+                  <div class="frame-fill">
+                    <Photo
+                      src={photo.src}
+                      alt={photo.alt}
+                      sizes="420px"
+                      widths={[420, 640]}
+                    />
+                  </div>
+                  <figcaption>{photo.caption}</figcaption>
+                </figure>
+              )),
+            )
+          }
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section cream" aria-labelledby="work-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="work-heading">Recent work</h2>
+        <p>Photos of James Studio Construction’s own projects. More are on the gallery page.</p>
+      </div>
+      <ul class="photo-grid">
+        {
+          featured.map((photo) => (
+            <li class="photo-card">
+              <a href={`/gallery/#${photo.id}`}>
+                <div class="frame-fill">
+                  <Photo
+                    src={photo.src}
+                    alt={photo.alt}
+                    sizes="(min-width: 980px) 340px, (min-width: 720px) 45vw, 100vw"
+                    widths={[400, 640, 800]}
+                  />
+                </div>
+                <figcaption>
+                  {photo.caption}
+                  <span class="cat-tag">{categoryLabel(photo.category)}</span>
+                </figcaption>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p style="margin-top:1rem">
+        <a class="btn btn-navy" href="/gallery/">See the gallery</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="area-heading">
+    <div class="wrap area-layout">
+      <div>
+        <p class="eyebrow">Service area</p>
+        <h2 id="area-heading">{site.serviceAreaLabel}</h2>
+        <p class="zip">
+          {site.address.postalCode}
+          <span>{site.address.city}, {site.address.region}</span>
+        </p>
+      </div>
+      <div>
+        <p>
+          Based in {site.address.city}, {site.address.region} {site.address.postalCode}.
+          Past jobs include work in McKinney and Garland.
+        </p>
+        <ul class="chips">
+          {
+            site.cities.map((city) => (
+              <li class="chip">
+                {city.name}
+                {city.role === "home" && <small>Home base</small>}
+                {city.role === "past" && <small>Past work</small>}
+              </li>
+            ))
+          }
+        </ul>
+        <p class="note">The city list is editable in the site config. Cities without a note are the service area, not finished-job claims.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="wrap">
+      <h2>Tell James about the project.</h2>
+      <p>
+        Call {site.phoneDisplay} or request a free estimate. {site.tagline}
+      </p>
+      <div class="cta-actions">
+        <a class="btn btn-orange" href="/contact/">Get a Free Estimate</a>
+        <a class="btn btn-ghost-light" href={`tel:${site.phoneTel}`}>Call {site.phoneDisplay}</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

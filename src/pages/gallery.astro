@@ -1,0 +1,67 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Photo from "../components/Photo.astro";
+import { categories, categoryLabel, extraPhotos, photos } from "../data/gallery";
+import { site } from "../config/site";
+
+const title = "Project Gallery | James Studio Construction";
+const description =
+  "Photos of James Studio Construction’s remodels, patio covers, fences, decks, roofing, siding, and built-in shelving in DeSoto and Dallas–Fort Worth.";
+const all = [...photos, ...extraPhotos];
+---
+
+<BaseLayout title={title} description={description}>
+  <header class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs">
+        <li><a href="/">Home</a></li>
+        <li aria-hidden="true">/</li>
+        <li>Gallery</li>
+      </ol>
+      <h1>Project gallery</h1>
+      <p>
+        Finished work and a few in-progress shots from {site.legalName}. These are James’s own
+        projects, not stock photos.
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="wrap gallery-browser">
+      <input class="sr-only" type="radio" name="cat" id="cat-all" checked />
+      {categories.map((category) => <input class="sr-only" type="radio" name="cat" id={`cat-${category.id}`} />)}
+      <div class="filters" role="radiogroup" aria-label="Filter projects">
+        <label class="filter" for="cat-all">All</label>
+        {categories.map((category) => <label class="filter" for={`cat-${category.id}`}>{category.label}</label>)}
+      </div>
+      <ul class="photo-grid">
+        {
+          all.map((photo) => (
+            <li class="card photo-card" id={photo.id} data-cat={photo.services.length ? photo.category : "extra"}>
+              <div class="frame-fill">
+                <Photo
+                  src={photo.src}
+                  alt={photo.alt}
+                  sizes="(min-width: 980px) 340px, (min-width: 720px) 45vw, 100vw"
+                  widths={[400, 640, 800]}
+                />
+              </div>
+              <figcaption>
+                {photo.caption}
+                {photo.services.length > 0 && <span class="cat-tag">{categoryLabel(photo.category)}</span>}
+              </figcaption>
+            </li>
+          ))
+        }
+      </ul>
+      {
+        extraPhotos.length > 0 && (
+          <p class="note">
+            Photos without a caption entry in src/data/gallery.ts are included above. Add an entry
+            to give them a category and description.
+          </p>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,147 @@
+---
+import { formState, services, site } from "../config/site";
+
+const form = formState();
+const origin = Astro.site?.toString().replace(/\/$/, "") ?? site.siteUrl;
+---
+
+<form
+  id="estimate"
+  class="form"
+  method="POST"
+  enctype="multipart/form-data"
+  action={form.ready ? form.action : "#estimate"}
+  data-estimate-form
+  data-ready={form.ready ? "true" : "false"}
+  data-email={site.email}
+  data-provider={form.provider}
+  name={form.name}
+  data-netlify={form.provider === "netlify" ? "true" : undefined}
+>
+  {
+    form.provider === "netlify" && (
+      <input type="hidden" name="form-name" value={form.name} />
+    )
+  }
+  {
+    form.provider === "web3forms" && (
+      <input type="hidden" name="access_key" value={form.accessKey} />
+    )
+  }
+  <input type="hidden" name="subject" value="Free estimate request — James Studio Construction" />
+  <input type="hidden" name="_subject" value="Free estimate request — James Studio Construction" />
+  {
+    form.provider === "formspree" && (
+      <input type="hidden" name="_next" value={`${origin}/thank-you/`} />
+    )
+  }
+  {
+    form.provider === "web3forms" && (
+      <input type="hidden" name="redirect" value={`${origin}/thank-you/`} />
+    )
+  }
+  <p class="sr-only">
+    <label>Company <input name="_gotcha" tabindex="-1" autocomplete="off" /></label>
+  </p>
+  <p class="sr-only">
+    <label>Leave blank <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+  </p>
+
+  <div class="fields">
+    <label class="field">
+      <span>Name</span>
+      <input name="name" type="text" autocomplete="name" required />
+    </label>
+    <label class="field">
+      <span>Phone</span>
+      <input name="phone" type="tel" autocomplete="tel" inputmode="tel" required />
+    </label>
+    <label class="field">
+      <span>Email</span>
+      <input name="email" type="email" autocomplete="email" required />
+    </label>
+    <label class="field">
+      <span>City</span>
+      <input name="city" type="text" autocomplete="address-level2" list="estimate-cities" required />
+      <datalist id="estimate-cities">
+        {site.cities.map((city) => <option value={city.name} />)}
+      </datalist>
+    </label>
+  </div>
+
+  <label class="field">
+    <span>Service</span>
+    <select name="service" required>
+      <option value="" selected disabled>Select a service</option>
+      {services.map((service) => <option value={service.name}>{service.name}</option>)}
+    </select>
+  </label>
+
+  <label class="field">
+    <span>Message</span>
+    <textarea name="message" required placeholder="What do you want done, and roughly where in the house or yard?"></textarea>
+  </label>
+
+  <label class="field">
+    <span>Photos <span class="hint">(optional)</span></span>
+    <input name="photos" type="file" accept="image/*" multiple />
+    <span class="hint">Up to 4 photos of the area. Most form services cap uploads around 10 MB.</span>
+  </label>
+
+  <button class="btn btn-orange" type="submit">
+    {form.ready ? "Request my free estimate" : "Email this request"}
+  </button>
+  <p class="form-status" data-form-status role="status"></p>
+  <p><a data-mailto-link hidden href={`mailto:${site.email}`}>Open the email</a></p>
+</form>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("[data-estimate-form]");
+  const status = document.querySelector<HTMLElement>("[data-form-status]");
+  const mailLink = document.querySelector<HTMLAnchorElement>("[data-mailto-link]");
+  if (form && status && mailLink) {
+    form.addEventListener("submit", async (event) => {
+      const ready = form.dataset.ready === "true";
+      const data = new FormData(form);
+      if (!ready) {
+        event.preventDefault();
+        const body = [
+          `Name: ${data.get("name") ?? ""}`,
+          `Phone: ${data.get("phone") ?? ""}`,
+          `Email: ${data.get("email") ?? ""}`,
+          `City: ${data.get("city") ?? ""}`,
+          `Service: ${data.get("service") ?? ""}`,
+          "",
+          String(data.get("message") ?? ""),
+          "",
+          "Photos, if you have them, can be sent after you call.",
+        ].join("\n");
+        const email = form.dataset.email ?? "";
+        mailLink.href = `mailto:${email}?subject=${encodeURIComponent("Free estimate request")}&body=${encodeURIComponent(body)}`;
+        mailLink.hidden = false;
+        status.textContent =
+          "The online form is not connected yet. Use the email link, or call and James will take it from there. Photo attachments are not included in that email.";
+        mailLink.focus();
+        return;
+      }
+
+      const provider = form.dataset.provider;
+      if (provider === "netlify") return;
+
+      event.preventDefault();
+      status.textContent = "Sending…";
+      try {
+        const response = await fetch(form.action, {
+          method: "POST",
+          body: data,
+          headers: { Accept: "application/json" },
+        });
+        if (!response.ok) throw new Error("Request failed");
+        window.location.href = "/thank-you/";
+      } catch {
+        status.textContent =
+          "That did not send. Call (254) 833-7392 or email the address on this page and James will follow up.";
+      }
+    });
+  }
+</script>

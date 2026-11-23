@@ -1,0 +1,36 @@
+---
+import { Image } from "astro:assets";
+import logo from "../assets/brand/logo-drive.jpg";
+import { site } from "../config/site";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div>
+      <a class="footer-logo logo" href="/" aria-label="James Studio Construction, home">
+        <Image src={logo} alt="" width={280} densities={[1, 2]} />
+      </a>
+      <p class="note">
+        {site.legalName}, owned by {site.owner}. {site.address.city}, {site.address.region}
+        {site.address.postalCode}.
+      </p>
+    </div>
+    <div class="footer-contact">
+      <a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a>
+      <a href={`mailto:${site.email}`}>{site.email}</a>
+      <a href={site.facebook.url} rel="noopener noreferrer">{site.facebook.label}</a>
+      <p>{site.serviceAreaLabel}</p>
+    </div>
+    <nav class="footer-links" aria-label="Footer">
+      <a href="/services/">Services</a>
+      <a href="/gallery/">Gallery</a>
+      <a href="/about/">About</a>
+      <a href="/contact/">Free estimate</a>
+    </nav>
+  </div>
+  <div class="wrap">
+    <p class="legal">© {year} {site.legalName}. All rights reserved.</p>
+  </div>
+</footer>

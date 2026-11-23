@@ -1,0 +1,54 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import logo from "../assets/brand/logo-drive.jpg";
+import { services, site } from "../config/site";
+
+const title = "About James Studio Construction | DeSoto, TX";
+const description =
+  "James Studio Construction is owned by James Koban and based in DeSoto, Texas. Insured, with a warranty, serving the Dallas–Fort Worth area.";
+---
+
+<BaseLayout title={title} description={description}>
+  <header class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs">
+        <li><a href="/">Home</a></li>
+        <li aria-hidden="true">/</li>
+        <li>About</li>
+      </ol>
+      <h1>About {site.legalName}</h1>
+      <p>Owned by {site.owner}. Based in {site.address.city}, {site.address.region} {site.address.postalCode}.</p>
+    </div>
+  </header>
+  <section class="section">
+    <div class="wrap prose">
+      <Image class="about-logo" src={logo} alt="JAMESTUDIO CONSTRUCTION" width={360} densities={[1, 2]} />
+      <p>
+        {site.legalName} is a home-improvement contractor in {site.address.city}, {site.address.region}.
+        {site.owner} owns the company. The service area is {site.serviceAreaLabel}. Past jobs include
+        work in McKinney and Garland.
+      </p>
+      <div class="quotes">
+        {
+          site.taglines.map((line) => (
+            <figure class="quote">
+              <blockquote>{line}</blockquote>
+              <figcaption>{site.legalName}</figcaption>
+            </figure>
+          ))
+        }
+      </div>
+      <p>
+        <a href={site.facebook.url} rel="noopener noreferrer">{site.facebook.label}</a>
+      </p>
+      <h2>Services</h2>
+      <ul>
+        {services.map((service) => <li><a href={`/services/${service.slug}/`}>{service.name}</a></li>)}
+      </ul>
+      <p>
+        <a class="btn btn-orange" href="/contact/">Get a Free Estimate</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>

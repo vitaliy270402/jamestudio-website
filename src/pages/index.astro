@@ -9,7 +9,7 @@ import {
 } from "../data/gallery";
 import { serviceGroups, services, site } from "../config/site";
 
-const heroPhotos = heroes();
+const heroPhoto = heroes().find((photo) => photo.id === "484344220") ?? heroes()[0];
 const featured = featuredPhotos();
 const patio = storySteps("patio");
 const shelves = storySteps("shelves");
@@ -22,62 +22,35 @@ const description =
 
 <BaseLayout title={title} description={description}>
   <section class="hero">
-    <div class="wrap hero-grid">
-      <div class="hero-copy">
-        <p class="eyebrow">{site.address.city}, {site.address.region} · Dallas–Fort Worth</p>
-        <h1>{site.tagline}</h1>
-        <p class="lede">
-          {site.legalName} builds and repairs homes for people in {site.serviceAreaLabel}.
-          Owned by {site.owner}.
-        </p>
-        <div class="hero-actions">
-          <a class="btn btn-orange" href="/contact/">Get a Free Estimate</a>
-          <a class="btn btn-ghost" href={`tel:${site.phoneTel}`}>Call {site.phoneDisplay}</a>
-        </div>
-        <ul class="trust">
-          <li>Insured</li>
-          <li>Warranty on the work</li>
-          <li>
-            <a href={site.facebook.url} rel="noopener noreferrer">{site.facebook.label}</a>
-          </li>
-        </ul>
+    <div class="hero-media">
+      <Photo
+        src={heroPhoto.src}
+        alt={heroPhoto.alt}
+        sizes="100vw"
+        widths={[640, 960, 1200]}
+        priority={true}
+      />
+    </div>
+    <div class="hero-scrim" aria-hidden="true"></div>
+    <div class="wrap hero-copy">
+      <p class="eyebrow">{site.address.city}, {site.address.region} · Dallas–Fort Worth</p>
+      <h1>{site.tagline}</h1>
+      <p class="lede">
+        {site.legalName} builds and repairs homes for people in {site.serviceAreaLabel}.
+        Owned by {site.owner}.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-orange" href="/contact/">Get a Free Estimate</a>
+        <a class="btn btn-ghost-light" href={`tel:${site.phoneTel}`}>Call {site.phoneDisplay}</a>
       </div>
-
-      <div class="hero-visual">
-        <div class="hero-frame">
-          {
-            heroPhotos.map((photo, index) => (
-              <div class="hero-slide">
-                <Photo
-                  src={photo.src}
-                  alt={photo.alt}
-                  sizes="(min-width: 980px) 480px, calc(100vw - 1.5rem)"
-                  widths={[480, 720, 960]}
-                  priority={index === 0}
-                />
-                <p class="hero-caption">{photo.caption}</p>
-              </div>
-            ))
-          }
-        </div>
-        <div class="thumbs" role="radiogroup" aria-label="Featured projects">
-          {
-            heroPhotos.map((photo, index) => (
-              <label class="thumb">
-                <input type="radio" name="hero" checked={index === 0} />
-                <Photo
-                  src={photo.src}
-                  alt=""
-                  sizes="72px"
-                  widths={[96, 160]}
-                  quality={60}
-                />
-                <span class="sr-only">{photo.caption}</span>
-              </label>
-            ))
-          }
-        </div>
-      </div>
+      <ul class="trust">
+        <li>Insured</li>
+        <li>Warranty on the work</li>
+        <li>
+          <a href={site.facebook.url} rel="noopener noreferrer">{site.facebook.label}</a>
+        </li>
+      </ul>
+      <p class="hero-credit">{heroPhoto.caption}</p>
     </div>
   </section>
 
@@ -112,6 +85,18 @@ const description =
     </div>
   </section>
 
+  <section class="cta-band" aria-labelledby="mid-cta">
+    <div class="wrap">
+      <p class="eyebrow">Free estimate</p>
+      <h2 id="mid-cta">Tell James about the project.</h2>
+      <p>Call {site.phoneDisplay} or send the details. {site.tagline}</p>
+      <div class="cta-actions">
+        <a class="btn btn-orange" href="/contact/">Get a Free Estimate</a>
+        <a class="btn btn-ghost-light" href={`tel:${site.phoneTel}`}>Call {site.phoneDisplay}</a>
+      </div>
+    </div>
+  </section>
+
   <section class="section cream" aria-labelledby="why-heading">
     <div class="wrap">
       <div class="section-head">
@@ -141,7 +126,7 @@ const description =
       <article class="story" id="patio">
         <h3>From slab to finished patio</h3>
         <p>One covered patio: layout, concrete, posts, framing, then the finished metal roof.</p>
-        <ol class="steps">
+        <ol class="filmstrip">
           {
             patio.map((step) => (
               <li class="step">
@@ -173,11 +158,12 @@ const description =
       <article class="story" id="shelves">
         <h3>Built-in shelving</h3>
         <p>Floor-to-ceiling shelves, from raw plywood to paint.</p>
-        <div class="pair">
+        <div class="compare">
           {
             shelves.flatMap((step) =>
               step.photos.map((photo) => (
                 <figure>
+                  <span class="compare-tag">{photo.stepLabel}</span>
                   <div class="frame-fill">
                     <Photo
                       src={photo.src}
@@ -197,11 +183,12 @@ const description =
       <article class="story" id="bathroom-progress">
         <h3>How it started, and how it's going</h3>
         <p>A bathroom remodel, from the original room to the demo.</p>
-        <div class="pair">
+        <div class="compare">
           {
             bathProgress.flatMap((step) =>
               step.photos.map((photo) => (
                 <figure>
+                  <span class="compare-tag">{photo.stepLabel}</span>
                   <div class="frame-fill">
                     <Photo
                       src={photo.src}
@@ -309,16 +296,4 @@ const description =
     </div>
   </section>
 
-  <section class="cta-band">
-    <div class="wrap">
-      <h2>Tell James about the project.</h2>
-      <p>
-        Call {site.phoneDisplay} or request a free estimate. {site.tagline}
-      </p>
-      <div class="cta-actions">
-        <a class="btn btn-orange" href="/contact/">Get a Free Estimate</a>
-        <a class="btn btn-ghost-light" href={`tel:${site.phoneTel}`}>Call {site.phoneDisplay}</a>
-      </div>
-    </div>
-  </section>
 </BaseLayout>

@@ -6,6 +6,7 @@ const siteUrl = process.env.SITE_URL || site.siteUrl;
 
 export default defineConfig({
   site: siteUrl,
+  base: "/",
   trailingSlash: "always",
   compressHTML: true,
   integrations: [

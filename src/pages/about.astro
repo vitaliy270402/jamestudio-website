@@ -4,9 +4,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import logo from "../assets/brand/logo-drive.jpg";
 import { services, site } from "../config/site";
 
-const title = "About James Studio Construction | DeSoto, TX";
+const title = `About James Studio Construction | ${site.titlePlace}`;
 const description =
-  "James Studio Construction is based in DeSoto, Texas. Insured, with a warranty, serving the Dallas–Fort Worth area.";
+  "James Studio Construction serves the Dallas and Fort Worth area. Insured, with a warranty.";
 ---
 
 <BaseLayout title={title} description={description}>
@@ -18,16 +18,15 @@ const description =
         <li>About</li>
       </ol>
       <h1>About {site.legalName}</h1>
-      <p>Based in {site.address.city}, {site.address.region} {site.address.postalCode}.</p>
+      <p>Serving {site.serviceAreaLabel}.</p>
     </div>
   </header>
   <section class="section">
     <div class="wrap prose">
       <Image class="about-logo" src={logo} alt="JAMESTUDIO CONSTRUCTION" width={360} densities={[1, 2]} />
       <p>
-        {site.legalName} is a home-improvement contractor in {site.address.city}, {site.address.region}.
-        The service area is {site.serviceAreaLabel}. Past jobs include
-        work in McKinney and Garland.
+        {site.legalName} is a home-improvement contractor in {site.serviceAreaLabel}.
+        Past jobs include work in McKinney and Garland.
       </p>
       <div class="quotes">
         {

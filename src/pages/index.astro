@@ -15,9 +15,9 @@ const patio = storySteps("patio");
 const shelves = storySteps("shelves");
 const bathProgress = storySteps("bath-progress");
 const tub = storySteps("tub");
-const title = "James Studio Construction | Remodels in DeSoto, TX";
+const title = `James Studio Construction | Remodels in ${site.titlePlace}`;
 const description =
-  "James Studio Construction remodels and repairs homes in DeSoto and the Dallas–Fort Worth area. Call (254) 833-7392 for a free estimate.";
+  "James Studio Construction remodels and repairs homes in the Dallas and Fort Worth area. Call (254) 833-7392 for a free estimate.";
 ---
 
 <BaseLayout title={title} description={description}>
@@ -269,16 +269,10 @@ const description =
       <div>
         <p class="eyebrow">Service area</p>
         <h2 id="area-heading">{site.serviceAreaLabel}</h2>
-        <p class="zip">
-          {site.address.postalCode}
-          <span>{site.address.city}, {site.address.region}</span>
-        </p>
+        <p>{site.displayArea}</p>
       </div>
       <div>
-        <p>
-          Based in {site.address.city}, {site.address.region} {site.address.postalCode}.
-          Past jobs include work in McKinney and Garland.
-        </p>
+        <p>Past jobs include work in McKinney and Garland.</p>
         <ul class="chips">
           {
             site.cities.map((city) => (

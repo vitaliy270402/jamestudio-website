@@ -2,9 +2,9 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { serviceGroups, services, site } from "../../config/site";
 
-const title = "Home Improvement Services in DeSoto, TX | James Studio Construction";
+const title = `Home Improvement Services in ${site.titlePlace} | James Studio Construction`;
 const description =
-  "Remodels, patios, decks, fencing, roofing, siding, repairs, and water damage mitigation in DeSoto and the Dallas–Fort Worth area.";
+  "Remodels, patios, decks, fencing, roofing, siding, repairs, and water damage mitigation in the Dallas and Fort Worth area.";
 ---
 
 <BaseLayout title={title} description={description}>
@@ -15,7 +15,7 @@ const description =
         <li aria-hidden="true">/</li>
         <li>Services</li>
       </ol>
-      <h1>Services in {site.address.city}, {site.address.region}</h1>
+      <h1>Services in {site.titlePlace}</h1>
       <p>{site.serviceAreaLabel}. Insured, with a warranty.</p>
     </div>
   </header>

@@ -18,7 +18,7 @@ interface Props {
 const { service } = Astro.props;
 const related = relatedServices(service.slug);
 const gallery = photosForService(service.slug);
-const title = `${service.seoName} in ${site.address.city}, ${site.address.region} | ${site.legalName}`;
+const title = `${service.seoName} in ${site.titlePlace} | ${site.legalName}`;
 const description = service.meta;
 ---
 
@@ -32,7 +32,7 @@ const description = service.meta;
         <li aria-hidden="true">/</li>
         <li>{service.name}</li>
       </ol>
-      <h1>{service.seoName} in {site.address.city}, {site.address.region}</h1>
+      <h1>{service.seoName} in {site.titlePlace}</h1>
       <p>{service.summary} Serving {site.serviceAreaLabel}.</p>
     </div>
   </header>

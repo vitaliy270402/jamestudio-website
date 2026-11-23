@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Marketing site for James Studio Construction, DeSoto, TX.",
+  "description": "Marketing site for James Studio Construction in the Dallas and Fort Worth area.",
   "scripts": {
     "dev": "astro dev --host",
     "build": "astro build",

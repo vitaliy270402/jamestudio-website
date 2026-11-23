@@ -1,6 +1,6 @@
 # James Studio Construction
 
-Marketing site for **James Studio Construction** (styled JAMESTUDIO CONSTRUCTION), based in DeSoto, TX. It is a static [Astro](https://astro.build) site aimed at local Google leads: phone calls and free-estimate requests.
+Marketing site for **James Studio Construction** (styled JAMESTUDIO CONSTRUCTION), serving the Dallas and Fort Worth area. It is a static [Astro](https://astro.build) site aimed at local Google leads: phone calls and free-estimate requests.
 
 ```bash
 npm install
@@ -28,7 +28,7 @@ All contact details, services, service-area cities, the quote-form backend, and 
 
 Hours and the license number are unknown. The site hides them while those fields are `null`. Do not invent them.
 
-`role: "home"` marks DeSoto. `role: "past"` marks cities where James has done work (McKinney and Garland). Other cities are the Dallas–Fort Worth service area, not a claim that a job was finished there.
+`role: "past"` marks cities where James has done work (McKinney and Garland). Other cities are part of the Dallas and Fort Worth service area, not a claim that a job was finished there. The public area label is “the Dallas and Fort Worth area.”
 
 ## Change the email to the new Gmail
 
@@ -80,5 +80,5 @@ After deploy, submit `https://YOUR-DOMAIN/sitemap-index.xml` in Google Search Co
 - Canonical URL, Open Graph, and Twitter card tags
 - `HomeAndConstructionBusiness` JSON-LD built from `src/config/site.ts`
 - `sitemap-index.xml` and `robots.txt`
-- One page per service, titled for DeSoto (for example “Bathroom Remodeling in DeSoto, TX”)
+- One page per service, titled for Dallas & Fort Worth, TX (for example “Bathroom Remodeling in Dallas & Fort Worth, TX”)
 - Analytics tag renders only when `gaMeasurementId` is a real `G-` id

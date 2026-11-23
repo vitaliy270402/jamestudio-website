@@ -6,7 +6,7 @@ import { formState, site } from "../config/site";
 const form = formState();
 const title = "Get a Free Estimate | James Studio Construction";
 const description =
-  "Request a free estimate from James Studio Construction in DeSoto, TX. Call (254) 833-7392 or send your name, city, and the service you need.";
+  "Request a free estimate from James Studio Construction in the Dallas and Fort Worth area. Call (254) 833-7392 or send your name, city, and the service you need.";
 ---
 
 <BaseLayout title={title} description={description}>
@@ -42,8 +42,7 @@ const description =
         <p><a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a></p>
         <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
         <p>
-          {site.address.city}, {site.address.region} {site.address.postalCode}<br />
-          {site.serviceAreaLabel}
+          {site.displayArea}
         </p>
         <p>
           <a href={site.facebook.url} rel="noopener noreferrer">{site.facebook.label}</a>

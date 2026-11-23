@@ -6,7 +6,7 @@ import { services, site } from "../config/site";
 
 const title = "About James Studio Construction | DeSoto, TX";
 const description =
-  "James Studio Construction is owned by James Koban and based in DeSoto, Texas. Insured, with a warranty, serving the Dallas–Fort Worth area.";
+  "James Studio Construction is based in DeSoto, Texas. Insured, with a warranty, serving the Dallas–Fort Worth area.";
 ---
 
 <BaseLayout title={title} description={description}>
@@ -18,7 +18,7 @@ const description =
         <li>About</li>
       </ol>
       <h1>About {site.legalName}</h1>
-      <p>Owned by {site.owner}. Based in {site.address.city}, {site.address.region} {site.address.postalCode}.</p>
+      <p>Based in {site.address.city}, {site.address.region} {site.address.postalCode}.</p>
     </div>
   </header>
   <section class="section">
@@ -26,7 +26,7 @@ const description =
       <Image class="about-logo" src={logo} alt="JAMESTUDIO CONSTRUCTION" width={360} densities={[1, 2]} />
       <p>
         {site.legalName} is a home-improvement contractor in {site.address.city}, {site.address.region}.
-        {site.owner} owns the company. The service area is {site.serviceAreaLabel}. Past jobs include
+        The service area is {site.serviceAreaLabel}. Past jobs include
         work in McKinney and Garland.
       </p>
       <div class="quotes">

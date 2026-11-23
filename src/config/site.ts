@@ -50,11 +50,12 @@ export const site = {
   phoneTel: "+12548337392",
 
   /**
-   * Public email. This is the only address the site prints and the only
-   * address used in mailto links. Change it here when the new Gmail is ready,
-   * then point the form provider at that same inbox (see the README).
+   * Public email. This is the only address the site prints, the only address
+   * used in mailto links, and the address in structured data. Change it here
+   * if the public inbox changes, then point the form provider at that same
+   * inbox (see the README).
    */
-  email: "jamestudio1115@hotmail.com",
+  email: "contact@jamestudioconstruction.com",
 
   address: {
     region: "TX",

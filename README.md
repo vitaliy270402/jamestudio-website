@@ -30,13 +30,17 @@ Hours and the license number are unknown. The site hides them while those fields
 
 `role: "past"` marks cities where James has done work (McKinney and Garland). Other cities are part of the Dallas and Fort Worth service area, not a claim that a job was finished there. The public area label is “the Dallas and Fort Worth area.”
 
-## Change the email to the new Gmail
+## Public email
+
+The public address is `contact@jamestudioconstruction.com`, set as `email` in `src/config/site.ts`. That value is what the contact page, footer, `mailto:` links, the estimate form’s email fallback, and the structured data use.
+
+To change it later:
 
 1. Set `email` in `src/config/site.ts`. That updates every address and `mailto:` link on the site.
 2. Point the form provider at that same inbox. The form does not choose the destination itself (so a visitor cannot redirect leads):
-   - **Formspree:** set the form’s notification email to the new Gmail, then put the form id in `form.formspreeId` and set `form.provider` to `"formspree"`.
-   - **Web3Forms:** create the access key while signed in as the new Gmail, then put that key in `form.web3formsAccessKey` and set `form.provider` to `"web3forms"`.
-   - **Netlify Forms:** set `form.provider` to `"netlify"`, deploy, then in the Netlify dashboard set the form notification email to the new Gmail. File uploads on Netlify Forms may require a paid plan.
+   - **Formspree:** set the form’s notification email to that inbox, then put the form id in `form.formspreeId` and set `form.provider` to `"formspree"`.
+   - **Web3Forms:** create the access key for that inbox, then put the key in `form.web3formsAccessKey` and set `form.provider` to `"web3forms"`.
+   - **Netlify Forms:** set `form.provider` to `"netlify"`, deploy, then in the Netlify dashboard set the form notification email to that inbox. File uploads on Netlify Forms may require a paid plan.
 3. Rebuild and deploy.
 
 Until `form.provider` is set with a real id or key, the estimate form does not post anywhere. Submitting it opens an email draft to the address in `email`, and the page keeps the call button and email address on screen.

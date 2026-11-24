@@ -911,6 +911,49 @@ h3 {
   text-decoration: underline;
 }
 
+.social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  list-style: none;
+  padding: 0;
+  margin: 0.85rem 0 0;
+}
+
+.social a {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  color: #fff;
+  line-height: 0;
+  text-decoration: none;
+}
+
+.social a:hover {
+  filter: brightness(1.08);
+}
+
+.social a:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 3px;
+}
+
+.social .yelp {
+  background: #d32323;
+}
+
+.social .facebook {
+  background: #1877f2;
+}
+
+.social svg {
+  width: 1.45rem;
+  height: 1.45rem;
+  display: block;
+}
+
 .legal {
   margin-top: 1.5rem;
   color: rgba(244, 239, 232, 0.62);

@@ -96,13 +96,14 @@ export const site = {
   ] as City[],
 
   yelp: {
+    url: "https://www.yelp.com/biz/jamestudio-construction-desoto",
     rating: "5.0",
     reviewCount: 7,
     label: "5.0 stars from 7 reviews on Yelp",
   },
 
   facebook: {
-    url: "https://www.facebook.com/jamestudioconstruction",
+    url: "https://www.facebook.com/jamestudioconstruction/",
     recommendPercent: 98,
     reviewCount: 13,
     label: "98% recommend on Facebook (13 reviews)",
@@ -554,7 +555,7 @@ export function businessJsonLd(origin: string) {
       addressRegion: site.address.region,
       addressCountry: site.address.country,
     })),
-    sameAs: [site.facebook.url],
+    sameAs: [site.yelp.url, site.facebook.url],
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "Home improvement services",

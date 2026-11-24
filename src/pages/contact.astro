@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import QuoteForm from "../components/QuoteForm.astro";
+import SocialLinks from "../components/SocialLinks.astro";
 import { site } from "../config/site";
 
 const title = `Get a Free Estimate | ${site.legalName}`;
@@ -31,9 +32,7 @@ const description = `Request a free estimate from ${site.legalName} in ${site.se
         <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
         <p>{site.displayArea}</p>
         <p>{site.yelp.label}</p>
-        <p>
-          <a href={site.facebook.url} rel="noopener noreferrer">Jamestudio Construction on Facebook</a>
-        </p>
+        <SocialLinks />
         <p>Insured, with a warranty on the work.</p>
       </aside>
     </div>

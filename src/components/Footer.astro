@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import logo from "../assets/brand/logo-drive.jpg";
+import SocialLinks from "./SocialLinks.astro";
 import { site } from "../config/site";
 
 const year = new Date().getFullYear();
@@ -31,11 +32,12 @@ const year = new Date().getFullYear();
         <p class="note">
           {site.legalName}. {site.displayArea}.
         </p>
+        <SocialLinks />
       </div>
       <div class="footer-contact">
         <a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a>
         <a href={`mailto:${site.email}`}>{site.email}</a>
-        <a href={site.facebook.url} rel="noopener noreferrer">{site.facebook.label}</a>
+        <p>{site.facebook.label}</p>
         <p>{site.serviceAreaLabel}</p>
       </div>
       <nav class="footer-links" aria-label="Footer">

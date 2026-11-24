@@ -1,6 +1,6 @@
-# James Studio Construction
+# Jamestudio Construction
 
-Marketing site for **James Studio Construction** (styled JAMESTUDIO CONSTRUCTION), serving the Dallas and Fort Worth area. It is a static [Astro](https://astro.build) site aimed at local Google leads: phone calls and free-estimate requests.
+Marketing site for **Jamestudio Construction** (styled JAMESTUDIO CONSTRUCTION), serving DeSoto, Cedar Hill, Lancaster, and the wider Dallas–Fort Worth area. It is a static [Astro](https://astro.build) site aimed at local Google leads: phone calls and free-estimate requests.
 
 ```bash
 npm install
@@ -28,29 +28,22 @@ All contact details, services, service-area cities, the quote-form backend, and 
 
 Hours and the license number are unknown. The site hides them while those fields are `null`. Do not invent them.
 
-`role: "past"` marks cities where James has done work (McKinney and Garland). Other cities are part of the Dallas and Fort Worth service area, not a claim that a job was finished there. The public area label is “the Dallas and Fort Worth area.”
+`role: "past"` marks cities where James has done work (McKinney and Garland). DeSoto, Cedar Hill, and Lancaster lead the service area. Other cities are part of the wider Dallas–Fort Worth service area, not a claim that a job was finished there.
 
 ## Public email
 
 The public address is `contact@jamestudioconstruction.com`, set as `email` in `src/config/site.ts`. That value is what the contact page, footer, `mailto:` links, the estimate form’s email fallback, and the structured data use.
 
-To change it later:
+The estimate form posts to [FormSubmit](https://formsubmit.co) at `contact@jamestudioconstruction.com`. The first submission to a new inbox sends FormSubmit’s activation email. Someone has to open that message and confirm the address before leads are delivered. After that, submissions arrive as a table with the subject “Free estimate request — Jamestudio Construction.”
 
-1. Set `email` in `src/config/site.ts`. That updates every address and `mailto:` link on the site.
-2. Point the form provider at that same inbox. The form does not choose the destination itself (so a visitor cannot redirect leads):
-   - **Formspree:** set the form’s notification email to that inbox, then put the form id in `form.formspreeId` and set `form.provider` to `"formspree"`.
-   - **Web3Forms:** create the access key for that inbox, then put the key in `form.web3formsAccessKey` and set `form.provider` to `"web3forms"`.
-   - **Netlify Forms:** set `form.provider` to `"netlify"`, deploy, then in the Netlify dashboard set the form notification email to that inbox. File uploads on Netlify Forms may require a paid plan.
-3. Rebuild and deploy.
+The form asks for name, phone, email, city, service, and message. It checks those fields in the browser, shows a success or error state, and keeps the phone number and email on the page. There is a honeypot field. Photo upload is not on the form; people can email pictures after they call.
 
-Until `form.provider` is set with a real id or key, the estimate form does not post anywhere. Submitting it opens an email draft to the address in `email`, and the page keeps the call button and email address on screen.
-
-The form asks for name, phone, email, city, service, message, and an optional photo (up to 4).
+To point the form at a different inbox later, change `email` in `src/config/site.ts` and activate FormSubmit for that new address. `form.provider` is `"formsubmit"`.
 
 ## Add project photos
 
 1. Put `.jpg`, `.png`, or `.webp` files in `src/assets/gallery/`.
-2. Add an entry in `src/data/gallery.ts` with `alt`, `caption`, `category`, and `services`. Categories: `pergolas`, `fences`, `bathrooms`, `roofing`, `decks`, `carpentry`.
+2. Add an entry in `src/data/gallery.ts` or `src/data/newWork.ts` with `alt`, `caption`, `category`, and `services`. Categories include pergolas, fences, bathrooms, kitchens, hardscape, painting, roofing, decks, doors and windows, flooring, whole-home remodels, and carpentry.
 3. Rebuild. Astro makes AVIF and WebP copies at several widths. Images are lazy-loaded except the first hero photo.
 
 A file with no catalog entry still appears on the gallery, captioned “Project photo”. Give it an entry so it lands in the right category.

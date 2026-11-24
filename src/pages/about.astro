@@ -1,12 +1,14 @@
 ---
 import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Photo from "../components/Photo.astro";
 import logo from "../assets/brand/logo-drive.jpg";
-import { services, site } from "../config/site";
+import { crewPhotos } from "../data/gallery";
+import { reviews, services, site } from "../config/site";
 
-const title = `About James Studio Construction | ${site.titlePlace}`;
-const description =
-  "James Studio Construction serves the Dallas and Fort Worth area. Insured, with a warranty.";
+const title = `About ${site.legalName} | ${site.titlePlace}`;
+const description = `${site.legalName} is a small remodeling crew for ${site.serviceAreaLabel}. Insured, with a warranty. ${site.yelp.label}.`;
+const crew = crewPhotos().slice(0, 4);
 ---
 
 <BaseLayout title={title} description={description}>
@@ -18,29 +20,49 @@ const description =
         <li>About</li>
       </ol>
       <h1>About {site.legalName}</h1>
-      <p>Serving {site.serviceAreaLabel}.</p>
+      <p>A small, hands-on crew for {site.serviceAreaLabel}.</p>
     </div>
   </header>
   <section class="section">
     <div class="wrap prose">
       <Image class="about-logo" src={logo} alt="JAMESTUDIO CONSTRUCTION" width={360} densities={[1, 2]} />
       <p>
-        {site.legalName} is a home-improvement contractor in {site.serviceAreaLabel}.
-        Past jobs include work in McKinney and Garland.
+        {site.legalName} remodels and renovates homes in {site.serviceAreaLabel}. James Koban runs the work with a small crew. Customers come back to the same things: the quality of the work, showing up on time, following through, and paying attention to the details.
       </p>
+      <p>{site.taglines[1]} {site.taglines[2]}</p>
+      <p>
+        <a href={site.facebook.url} rel="noopener noreferrer">Jamestudio Construction on Facebook</a>
+        <span> · {site.yelp.label}</span>
+      </p>
+      <h2>On the job</h2>
+      <ul class="photo-grid">
+        {
+          crew.map((photo) => (
+            <li class="photo-card">
+              <div class="frame-fill">
+                <Photo src={photo.src} alt={photo.alt} sizes="(min-width: 720px) 45vw, 100vw" widths={[400, 720]} />
+              </div>
+              <figcaption>{photo.caption}</figcaption>
+            </li>
+          ))
+        }
+      </ul>
+      <h2>From Yelp</h2>
       <div class="quotes">
         {
-          site.taglines.map((line) => (
-            <figure class="quote">
-              <blockquote>{line}</blockquote>
-              <figcaption>{site.legalName}</figcaption>
+          reviews.map((review) => (
+            <figure class="quote quote-review">
+              <blockquote>{review.quote}</blockquote>
+              <figcaption>
+                {review.name}
+                <span>
+                  {review.source}, {review.date}
+                </span>
+              </figcaption>
             </figure>
           ))
         }
       </div>
-      <p>
-        <a href={site.facebook.url} rel="noopener noreferrer">{site.facebook.label}</a>
-      </p>
       <h2>Services</h2>
       <ul>
         {services.map((service) => <li><a href={`/services/${service.slug}/`}>{service.name}</a></li>)}

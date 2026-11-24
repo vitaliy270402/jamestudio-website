@@ -3,24 +3,41 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Photo from "../components/Photo.astro";
 import {
   categoryLabel,
-  featuredPhotos,
+  crewPhotos,
+  highlightPhotos,
   photos,
   storySteps,
 } from "../data/gallery";
-import { serviceGroups, services, site } from "../config/site";
+import { faqs, reviews, serviceGroups, services, site } from "../config/site";
 
-const heroPhoto = photos.find((photo) => photo.file === "482226989.jpg");
+const heroPhoto = photos.find((photo) => photo.file === "travertine-estate-pool-patio-pavers-after.jpg");
 if (!heroPhoto) {
-  throw new Error("Home hero image is missing: src/assets/gallery/482226989.jpg");
+  throw new Error("Home hero image is missing.");
 }
-const featured = featuredPhotos();
-const patio = storySteps("patio");
-const shelves = storySteps("shelves");
-const bathProgress = storySteps("bath-progress");
-const tub = storySteps("tub");
-const title = `James Studio Construction | Remodels in ${site.titlePlace}`;
-const description =
-  "James Studio Construction remodels and repairs homes in the Dallas and Fort Worth area. Call (254) 833-7392 for a free estimate.";
+const highlights = highlightPhotos();
+const crew = crewPhotos();
+const comparisons = [
+  {
+    id: "siding",
+    title: "Siding, from wrap to finished porch",
+    text: "The same ranch house: house wrap, then the finished porch and siding.",
+    steps: storySteps("siding"),
+  },
+  {
+    id: "garage",
+    title: "Garage doors, painted",
+    text: "Gray garage doors on a brick and stone house, in progress and finished.",
+    steps: storySteps("garage"),
+  },
+  {
+    id: "planter",
+    title: "Planter and walkway",
+    text: "A drainage and planter sequence, from the open trench to the finished walk.",
+    steps: storySteps("planter"),
+  },
+];
+const title = `Jamestudio Construction | Remodels in ${site.titlePlace}`;
+const description = `${site.legalName} remodels and renovates homes in ${site.serviceAreaLabel}. A small crew, insured, with a warranty. Call ${site.phoneDisplay}.`;
 ---
 
 <BaseLayout title={title} description={description}>
@@ -30,16 +47,16 @@ const description =
         src={heroPhoto.src}
         alt={heroPhoto.alt}
         sizes="100vw"
-        widths={[720, 960]}
+        widths={[720, 1200, 1600]}
         priority={true}
       />
     </div>
     <div class="hero-scrim" aria-hidden="true"></div>
     <div class="wrap hero-copy">
-      <p class="eyebrow">Dallas and Fort Worth</p>
+      <p class="eyebrow">DeSoto, Cedar Hill, Lancaster</p>
       <h1>{site.tagline}</h1>
       <p class="lede">
-        James Studio Construction builds and repairs homes for people in the Dallas and Fort Worth area.
+        {site.legalName} remodels and renovates homes for people in {site.serviceAreaLabel}. James and a small crew do the work themselves.
       </p>
       <div class="hero-actions">
         <a class="btn btn-orange" href="/contact/">Get a Free Estimate</a>
@@ -48,9 +65,7 @@ const description =
       <ul class="trust">
         <li>Insured</li>
         <li>Warranty on the work</li>
-        <li>
-          <a href={site.facebook.url} rel="noopener noreferrer">{site.facebook.label}</a>
-        </li>
+        <li>{site.yelp.label}</li>
       </ul>
       <p class="hero-credit">{heroPhoto.caption}</p>
     </div>
@@ -61,7 +76,7 @@ const description =
       <div class="section-head">
         <h2 id="services-heading">What we do</h2>
         <p>
-          Remodels, outdoor structures, roofing, siding, and repairs for {site.serviceAreaLabel}.
+          Kitchens, baths, whole-home remodels, paint, flooring, siding, fences, pergolas, decks, metal roofs, windows, doors, and stonework for {site.serviceAreaLabel}.
         </p>
       </div>
       {
@@ -91,7 +106,7 @@ const description =
     <div class="wrap">
       <p class="eyebrow">Free estimate</p>
       <h2 id="mid-cta">Tell James about the project.</h2>
-      <p>Call {site.phoneDisplay} or send the details. {site.tagline}</p>
+      <p>Call {site.phoneDisplay} or send the details. He follows up.</p>
       <div class="cta-actions">
         <a class="btn btn-orange" href="/contact/">Get a Free Estimate</a>
         <a class="btn btn-ghost-light" href={`tel:${site.phoneTel}`}>Call {site.phoneDisplay}</a>
@@ -99,18 +114,23 @@ const description =
     </div>
   </section>
 
-  <section class="section cream" aria-labelledby="why-heading">
+  <section class="section cream" aria-labelledby="reviews-heading">
     <div class="wrap">
       <div class="section-head">
-        <h2 id="why-heading">What you can count on</h2>
-        <p>In James Studio Construction’s own words.</p>
+        <h2 id="reviews-heading">What customers say</h2>
+        <p>{site.yelp.label}. Quoted here the way they were written.</p>
       </div>
       <div class="quotes">
         {
-          site.taglines.map((line) => (
-            <figure class="quote">
-              <blockquote>{line}</blockquote>
-              <figcaption>{site.legalName}</figcaption>
+          reviews.map((review) => (
+            <figure class="quote quote-review">
+              <blockquote>{review.quote}</blockquote>
+              <figcaption>
+                {review.name}
+                <span>
+                  {review.source}, {review.date}
+                </span>
+              </figcaption>
             </figure>
           ))
         }
@@ -121,127 +141,78 @@ const description =
   <section class="section" aria-labelledby="stories-heading">
     <div class="wrap">
       <div class="section-head">
-        <h2 id="stories-heading">Project stories</h2>
-        <p>Real jobs, including a patio that went from a bare slab to a finished cover.</p>
+        <h2 id="stories-heading">Before and after</h2>
+        <p>The same jobs, earlier in the work and further along.</p>
       </div>
-
-      <article class="story" id="patio">
-        <h3>From slab to finished patio</h3>
-        <p>One covered patio: layout, concrete, posts, framing, then the finished metal roof.</p>
-        <ol class="filmstrip">
-          {
-            patio.map((step) => (
-              <li class="step">
-                <p class="step-label">
-                  <b>{step.step}</b>
-                  {step.label}
-                </p>
-                <div class="step-photos">
-                  {step.photos.map((photo) => (
+      {
+        comparisons.map((story) => (
+          <article class="story" id={story.id}>
+            <h3>{story.title}</h3>
+            <p>{story.text}</p>
+            <div class="compare">
+              {story.steps.flatMap((step) =>
+                step.photos
+                  .filter((photo, index) => index === 0)
+                  .map((photo) => (
                     <figure>
+                      <span class="compare-tag">{photo.stepLabel}</span>
                       <div class="frame-fill">
                         <Photo
                           src={photo.src}
                           alt={photo.alt}
-                          sizes="(min-width: 980px) 320px, 100vw"
-                          widths={[400, 640, 800]}
+                          sizes="(min-width: 720px) 45vw, 100vw"
+                          widths={photo.soft ? [360, 560] : [480, 800]}
                         />
                       </div>
                       <figcaption>{photo.caption}</figcaption>
                     </figure>
-                  ))}
-                </div>
-              </li>
-            ))
-          }
-        </ol>
-      </article>
-
-      <article class="story" id="shelves">
-        <h3>Built-in shelving</h3>
-        <p>Floor-to-ceiling shelves, from raw plywood to paint.</p>
-        <div class="compare">
-          {
-            shelves.flatMap((step) =>
-              step.photos.map((photo) => (
-                <figure>
-                  <span class="compare-tag">{photo.stepLabel}</span>
-                  <div class="frame-fill">
-                    <Photo
-                      src={photo.src}
-                      alt={photo.alt}
-                      sizes="(min-width: 720px) 45vw, 100vw"
-                      widths={[480, 720]}
-                    />
-                  </div>
-                  <figcaption>{photo.caption}</figcaption>
-                </figure>
-              )),
-            )
-          }
-        </div>
-      </article>
-
-      <article class="story" id="bathroom-progress">
-        <h3>How it started, and how it's going</h3>
-        <p>A bathroom remodel, from the original room to the demo.</p>
-        <div class="compare">
-          {
-            bathProgress.flatMap((step) =>
-              step.photos.map((photo) => (
-                <figure>
-                  <span class="compare-tag">{photo.stepLabel}</span>
-                  <div class="frame-fill">
-                    <Photo
-                      src={photo.src}
-                      alt={photo.alt}
-                      sizes="(min-width: 720px) 45vw, 100vw"
-                      widths={[480, 720]}
-                    />
-                  </div>
-                  <figcaption>{photo.caption}</figcaption>
-                </figure>
-              )),
-            )
-          }
-        </div>
-      </article>
-
-      <article class="story" id="tub">
-        <h3>Tub replacement</h3>
-        <p>Before and after in one photo.</p>
-        <div class="frame-modest">
-          {
-            tub.flatMap((step) =>
-              step.photos.map((photo) => (
-                <figure>
-                  <div class="frame-fill">
-                    <Photo
-                      src={photo.src}
-                      alt={photo.alt}
-                      sizes="420px"
-                      widths={[420, 640]}
-                    />
-                  </div>
-                  <figcaption>{photo.caption}</figcaption>
-                </figure>
-              )),
-            )
-          }
-        </div>
-      </article>
+                  )),
+              )}
+            </div>
+          </article>
+        ))
+      }
+      <p>
+        <a class="btn btn-navy" href="/gallery/#comparisons">See more progress shots</a>
+      </p>
     </div>
   </section>
 
-  <section class="section cream" aria-labelledby="work-heading">
+  <section class="section cream" aria-labelledby="crew-heading">
     <div class="wrap">
       <div class="section-head">
-        <h2 id="work-heading">Recent work</h2>
-        <p>Photos of James Studio Construction’s own projects. More are on the gallery page.</p>
+        <h2 id="crew-heading">A small crew, on the tools</h2>
+        <p>James and the people who work with him. Painting, framing, roofing, and stone, on the job.</p>
       </div>
       <ul class="photo-grid">
         {
-          featured.map((photo) => (
+          crew.map((photo) => (
+            <li class="photo-card">
+              <div class="frame-fill">
+                <Photo
+                  src={photo.src}
+                  alt={photo.alt}
+                  sizes="(min-width: 980px) 340px, (min-width: 720px) 45vw, 100vw"
+                  widths={[400, 720]}
+                />
+              </div>
+              <figcaption>{photo.caption}</figcaption>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="work-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="work-heading">Recent work</h2>
+        <p>Finished jobs from {site.legalName}. More photos are on the gallery page.</p>
+      </div>
+      <ul class="photo-grid">
+        {
+          highlights.map((photo) => (
             <li class="photo-card">
               <a href={`/gallery/#${photo.id}`}>
                 <div class="frame-fill">
@@ -249,7 +220,7 @@ const description =
                     src={photo.src}
                     alt={photo.alt}
                     sizes="(min-width: 980px) 340px, (min-width: 720px) 45vw, 100vw"
-                    widths={[400, 640, 800]}
+                    widths={[400, 720]}
                   />
                 </div>
                 <figcaption>
@@ -267,29 +238,44 @@ const description =
     </div>
   </section>
 
-  <section class="section" aria-labelledby="area-heading">
-    <div class="wrap area-layout">
-      <div>
-        <p class="eyebrow">Service area</p>
-        <h2 id="area-heading">{site.serviceAreaLabel}</h2>
-        <p>{site.displayArea}</p>
+  <section class="section cream" aria-labelledby="faq-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="faq-heading">Questions people ask</h2>
       </div>
-      <div>
-        <p>Past jobs include work in McKinney and Garland.</p>
-        <ul class="chips">
-          {
-            site.cities.map((city) => (
-              <li class="chip">
-                {city.name}
-                {city.role === "home" && <small>Home base</small>}
-                {city.role === "past" && <small>Past work</small>}
-              </li>
-            ))
-          }
-        </ul>
-        <p class="note">The city list is editable in the site config. Cities without a note are the service area, not finished-job claims.</p>
+      <div class="faq">
+        {
+          faqs.map((item) => (
+            <details>
+              <summary>{item.question}</summary>
+              <p>{item.answer}</p>
+            </details>
+          ))
+        }
       </div>
     </div>
   </section>
 
+  <section class="section" aria-labelledby="area-heading">
+    <div class="wrap area-layout">
+      <div>
+        <p class="eyebrow">Service area</p>
+        <h2 id="area-heading">DeSoto, Cedar Hill, Lancaster, and beyond</h2>
+        <p>{site.displayArea}. Past jobs include work in McKinney and Garland.</p>
+        <p>
+          <a class="btn btn-orange" href="/contact/">Get a Free Estimate</a>
+        </p>
+      </div>
+      <ul class="chips">
+        {
+          site.cities.map((city) => (
+            <li class="chip">
+              {city.name}
+              {city.role === "past" && <small>Past work</small>}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
 </BaseLayout>

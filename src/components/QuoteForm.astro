@@ -3,62 +3,47 @@ import { formState, services, site } from "../config/site";
 
 const form = formState();
 const origin = Astro.site?.toString().replace(/\/$/, "") ?? site.siteUrl;
+const ajaxAction = form.action;
+const plainAction = form.ready
+  ? `https://formsubmit.co/${encodeURIComponent(site.email)}`
+  : "#estimate";
 ---
 
 <form
   id="estimate"
   class="form"
   method="POST"
-  enctype="multipart/form-data"
-  action={form.ready ? form.action : "#estimate"}
+  action={plainAction}
   data-estimate-form
   data-ready={form.ready ? "true" : "false"}
+  data-ajax={ajaxAction}
   data-email={site.email}
-  data-provider={form.provider}
-  name={form.name}
-  data-netlify={form.provider === "netlify" ? "true" : undefined}
+  data-phone={site.phoneDisplay}
+  novalidate
 >
-  {
-    form.provider === "netlify" && (
-      <input type="hidden" name="form-name" value={form.name} />
-    )
-  }
-  {
-    form.provider === "web3forms" && (
-      <input type="hidden" name="access_key" value={form.accessKey} />
-    )
-  }
-  <input type="hidden" name="subject" value="Free estimate request — James Studio Construction" />
-  <input type="hidden" name="_subject" value="Free estimate request — James Studio Construction" />
-  {
-    form.provider === "formspree" && (
-      <input type="hidden" name="_next" value={`${origin}/thank-you/`} />
-    )
-  }
-  {
-    form.provider === "web3forms" && (
-      <input type="hidden" name="redirect" value={`${origin}/thank-you/`} />
-    )
-  }
-  <p class="sr-only">
-    <label>Company <input name="_gotcha" tabindex="-1" autocomplete="off" /></label>
-  </p>
-  <p class="sr-only">
-    <label>Leave blank <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+  <input type="hidden" name="_subject" value="Free estimate request — Jamestudio Construction" />
+  <input type="hidden" name="_template" value="table" />
+  <input type="hidden" name="_captcha" value="false" />
+  <input type="hidden" name="_next" value={`${origin}/thank-you/`} />
+  <p class="hp" aria-hidden="true">
+    <label>Company website <input name="_honey" tabindex="-1" autocomplete="off" /></label>
   </p>
 
   <div class="fields">
     <label class="field">
       <span>Name</span>
       <input name="name" type="text" autocomplete="name" required />
+      <span class="field-error" data-error-for="name"></span>
     </label>
     <label class="field">
       <span>Phone</span>
       <input name="phone" type="tel" autocomplete="tel" inputmode="tel" required />
+      <span class="field-error" data-error-for="phone"></span>
     </label>
     <label class="field">
       <span>Email</span>
       <input name="email" type="email" autocomplete="email" required />
+      <span class="field-error" data-error-for="email"></span>
     </label>
     <label class="field">
       <span>City</span>
@@ -66,81 +51,150 @@ const origin = Astro.site?.toString().replace(/\/$/, "") ?? site.siteUrl;
       <datalist id="estimate-cities">
         {site.cities.map((city) => <option value={city.name} />)}
       </datalist>
+      <span class="field-error" data-error-for="city"></span>
     </label>
   </div>
 
   <label class="field">
     <span>Service</span>
     <select name="service" required>
-      <option value="" selected disabled>Select a service</option>
+      <option value="">Select a service</option>
       {services.map((service) => <option value={service.name}>{service.name}</option>)}
     </select>
+    <span class="field-error" data-error-for="service"></span>
   </label>
 
   <label class="field">
     <span>Message</span>
     <textarea name="message" required placeholder="What do you want done, and roughly where in the house or yard?"></textarea>
+    <span class="field-error" data-error-for="message"></span>
   </label>
 
-  <label class="field">
-    <span>Photos <span class="hint">(optional)</span></span>
-    <input name="photos" type="file" accept="image/*" multiple />
-    <span class="hint">Up to 4 photos of the area. Most form services cap uploads around 10 MB.</span>
-  </label>
-
-  <button class="btn btn-orange" type="submit">
-    {form.ready ? "Request my free estimate" : "Email this request"}
-  </button>
+  <button class="btn btn-orange" type="submit">Request my free estimate</button>
   <p class="form-status" data-form-status role="status"></p>
-  <p><a data-mailto-link hidden href={`mailto:${site.email}`}>Open the email</a></p>
+  <div class="form-success" data-form-success hidden tabindex="-1">
+    <h2>Request sent</h2>
+    <p>
+      Thanks. James will follow up about the project. If it is urgent, call
+      <a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a>
+      or email <a href={`mailto:${site.email}`}>{site.email}</a>.
+    </p>
+  </div>
 </form>
 
 <script>
   const form = document.querySelector<HTMLFormElement>("[data-estimate-form]");
-  const status = document.querySelector<HTMLElement>("[data-form-status]");
-  const mailLink = document.querySelector<HTMLAnchorElement>("[data-mailto-link]");
-  if (form && status && mailLink) {
+  const status = form?.querySelector<HTMLElement>("[data-form-status]");
+  const success = form?.querySelector<HTMLElement>("[data-form-success]");
+  if (form && status && success) {
+    const fields = ["name", "phone", "email", "city", "service", "message"] as const;
+
+    function control(name: string) {
+      return form.querySelector<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(
+        `[name="${name}"]`,
+      );
+    }
+
+    function setError(name: string, message: string) {
+      const input = control(name);
+      const slot = form.querySelector<HTMLElement>(`[data-error-for="${name}"]`);
+      if (slot) slot.textContent = message;
+      if (input) {
+        input.setAttribute("aria-invalid", message ? "true" : "false");
+        if (message && slot) {
+          if (!slot.id) slot.id = `error-${name}`;
+          input.setAttribute("aria-describedby", slot.id);
+        } else {
+          input.removeAttribute("aria-describedby");
+        }
+      }
+    }
+
+    function validate() {
+      const name = control("name")?.value.trim() ?? "";
+      const phone = control("phone")?.value.trim() ?? "";
+      const email = control("email")?.value.trim() ?? "";
+      const city = control("city")?.value.trim() ?? "";
+      const service = control("service")?.value.trim() ?? "";
+      const message = control("message")?.value.trim() ?? "";
+      const digits = phone.replace(/\D/g, "");
+      const problems: { name: (typeof fields)[number]; message: string }[] = [];
+      if (name.length < 2) problems.push({ name: "name", message: "Enter your name." });
+      if (digits.length < 10) problems.push({ name: "phone", message: "Enter a phone number with area code." });
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        problems.push({ name: "email", message: "Enter a valid email address." });
+      }
+      if (city.length < 2) problems.push({ name: "city", message: "Enter your city." });
+      if (!service) problems.push({ name: "service", message: "Choose a service." });
+      if (message.length < 10) {
+        problems.push({ name: "message", message: "Tell James a little about the project." });
+      }
+      for (const field of fields) setError(field, "");
+      for (const problem of problems) setError(problem.name, problem.message);
+      return { problems, values: { name, phone, email, city, service, message } };
+    }
+
     form.addEventListener("submit", async (event) => {
-      const ready = form.dataset.ready === "true";
-      const data = new FormData(form);
-      if (!ready) {
-        event.preventDefault();
-        const body = [
-          `Name: ${data.get("name") ?? ""}`,
-          `Phone: ${data.get("phone") ?? ""}`,
-          `Email: ${data.get("email") ?? ""}`,
-          `City: ${data.get("city") ?? ""}`,
-          `Service: ${data.get("service") ?? ""}`,
-          "",
-          String(data.get("message") ?? ""),
-          "",
-          "Photos, if you have them, can be sent after you call.",
-        ].join("\n");
-        const email = form.dataset.email ?? "";
-        mailLink.href = `mailto:${email}?subject=${encodeURIComponent("Free estimate request")}&body=${encodeURIComponent(body)}`;
-        mailLink.hidden = false;
-        status.textContent =
-          "The online form is not connected yet. Use the email link, or call and James will take it from there. Photo attachments are not included in that email.";
-        mailLink.focus();
+      if (form.dataset.ready !== "true") return;
+      event.preventDefault();
+      const honey = form.querySelector<HTMLInputElement>('[name="_honey"]')?.value ?? "";
+      const { problems, values } = validate();
+      if (problems.length > 0) {
+        status.textContent = "Check the highlighted fields, then send it again.";
+        control(problems[0].name)?.focus();
+        return;
+      }
+      if (honey.trim()) {
+        form.classList.add("is-sent");
+        success.hidden = false;
+        success.focus();
         return;
       }
 
-      const provider = form.dataset.provider;
-      if (provider === "netlify") return;
-
-      event.preventDefault();
+      const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+      if (button) button.disabled = true;
       status.textContent = "Sending…";
       try {
-        const response = await fetch(form.action, {
+        const response = await fetch(form.dataset.ajax ?? form.action, {
           method: "POST",
-          body: data,
-          headers: { Accept: "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            name: values.name,
+            phone: values.phone,
+            email: values.email,
+            city: values.city,
+            service: values.service,
+            message: values.message,
+            _replyto: values.email,
+            _subject: "Free estimate request — Jamestudio Construction",
+            _template: "table",
+            _captcha: "false",
+          }),
         });
-        if (!response.ok) throw new Error("Request failed");
-        window.location.href = "/thank-you/";
-      } catch {
-        status.textContent =
-          "That did not send. Call (254) 833-7392 or email the address on this page and James will follow up.";
+        const body = (await response.json().catch(() => ({}))) as { success?: string | boolean; message?: string };
+        const ok = response.ok && body.success !== false && body.success !== "false";
+        if (!ok) {
+          const detail = body.message?.trim();
+          throw new Error(detail || "Request failed");
+        }
+        form.reset();
+        for (const field of fields) setError(field, "");
+        form.classList.add("is-sent");
+        status.textContent = "";
+        success.hidden = false;
+        success.focus();
+      } catch (error) {
+        const raw = error instanceof Error ? error.message : "";
+        const technical = /failed to fetch|networkerror|request failed/i.test(raw);
+        const detail = raw && !technical ? `${raw} ` : "";
+        const phoneText = form.dataset.phone ?? "";
+        const email = form.dataset.email ?? "";
+        status.textContent = `${detail}That did not send. Call ${phoneText} or email ${email} and James will follow up.`;
+      } finally {
+        if (button) button.disabled = false;
       }
     });
   }

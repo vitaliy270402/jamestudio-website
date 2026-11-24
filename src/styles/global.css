@@ -657,6 +657,15 @@ h3 {
   font-size: 0.95rem;
 }
 
+.quote-review blockquote {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 1.05rem;
+  line-height: 1.45;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
 .story + .story {
   margin-top: 2.25rem;
 }
@@ -1011,8 +1020,14 @@ h3 {
 .gallery-browser:has(#cat-pergolas:checked) .filter[for="cat-pergolas"],
 .gallery-browser:has(#cat-fences:checked) .filter[for="cat-fences"],
 .gallery-browser:has(#cat-bathrooms:checked) .filter[for="cat-bathrooms"],
+.gallery-browser:has(#cat-kitchens:checked) .filter[for="cat-kitchens"],
+.gallery-browser:has(#cat-hardscape:checked) .filter[for="cat-hardscape"],
+.gallery-browser:has(#cat-painting:checked) .filter[for="cat-painting"],
 .gallery-browser:has(#cat-roofing:checked) .filter[for="cat-roofing"],
 .gallery-browser:has(#cat-decks:checked) .filter[for="cat-decks"],
+.gallery-browser:has(#cat-openings:checked) .filter[for="cat-openings"],
+.gallery-browser:has(#cat-flooring:checked) .filter[for="cat-flooring"],
+.gallery-browser:has(#cat-remodels:checked) .filter[for="cat-remodels"],
 .gallery-browser:has(#cat-carpentry:checked) .filter[for="cat-carpentry"] {
   border-color: var(--navy);
   background: var(--navy);
@@ -1022,8 +1037,14 @@ h3 {
 .gallery-browser:has(#cat-pergolas:checked) .card:not([data-cat="pergolas"]),
 .gallery-browser:has(#cat-fences:checked) .card:not([data-cat="fences"]),
 .gallery-browser:has(#cat-bathrooms:checked) .card:not([data-cat="bathrooms"]),
+.gallery-browser:has(#cat-kitchens:checked) .card:not([data-cat="kitchens"]),
+.gallery-browser:has(#cat-hardscape:checked) .card:not([data-cat="hardscape"]),
+.gallery-browser:has(#cat-painting:checked) .card:not([data-cat="painting"]),
 .gallery-browser:has(#cat-roofing:checked) .card:not([data-cat="roofing"]),
 .gallery-browser:has(#cat-decks:checked) .card:not([data-cat="decks"]),
+.gallery-browser:has(#cat-openings:checked) .card:not([data-cat="openings"]),
+.gallery-browser:has(#cat-flooring:checked) .card:not([data-cat="flooring"]),
+.gallery-browser:has(#cat-remodels:checked) .card:not([data-cat="remodels"]),
 .gallery-browser:has(#cat-carpentry:checked) .card:not([data-cat="carpentry"]) {
   display: none;
 }
@@ -1098,6 +1119,85 @@ h3 {
 .form-status {
   min-height: 1.4rem;
   font-weight: 600;
+}
+
+.hp {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.field-error {
+  color: #8d1d18;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.field-error:empty {
+  display: none;
+}
+
+.field input[aria-invalid="true"],
+.field select[aria-invalid="true"],
+.field textarea[aria-invalid="true"] {
+  border-color: #8d1d18;
+  outline: 2px solid #8d1d18;
+  outline-offset: 1px;
+}
+
+.form.is-sent > :not(.form-success) {
+  display: none;
+}
+
+.form-success {
+  background: #f4f7f2;
+  border: 1px solid #c5d4be;
+  padding: 1rem;
+}
+
+.form-success h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1.8rem;
+}
+
+.quote figcaption span {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--muted);
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  font-family: var(--font-body, inherit);
+  font-size: 0.92rem;
+}
+
+.faq {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.faq details {
+  background: #fff;
+  border: 1px solid var(--line);
+  padding: 0.75rem 0.9rem;
+}
+
+.faq summary {
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  font-size: 1.25rem;
+}
+
+.faq details p {
+  margin: 0.55rem 0 0.15rem;
+}
+
+.story + .story {
+  margin-top: 1.6rem;
 }
 
 .about-logo {

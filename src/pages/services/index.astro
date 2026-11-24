@@ -2,9 +2,8 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { serviceGroups, services, site } from "../../config/site";
 
-const title = `Home Improvement Services in ${site.titlePlace} | James Studio Construction`;
-const description =
-  "Remodels, patios, decks, fencing, roofing, siding, repairs, and water damage mitigation in the Dallas and Fort Worth area.";
+const title = `Home Improvement Services in ${site.titlePlace} | ${site.legalName}`;
+const description = `Remodels, hardscape, fencing, roofing, siding, painting, and repairs in ${site.serviceAreaLabel}.`;
 ---
 
 <BaseLayout title={title} description={description}>

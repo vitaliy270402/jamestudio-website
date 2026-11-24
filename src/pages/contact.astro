@@ -1,12 +1,10 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import QuoteForm from "../components/QuoteForm.astro";
-import { formState, site } from "../config/site";
+import { site } from "../config/site";
 
-const form = formState();
-const title = "Get a Free Estimate | James Studio Construction";
-const description =
-  "Request a free estimate from James Studio Construction in the Dallas and Fort Worth area. Call (254) 833-7392 or send your name, city, and the service you need.";
+const title = `Get a Free Estimate | ${site.legalName}`;
+const description = `Request a free estimate from ${site.legalName} in ${site.serviceAreaLabel}. Call ${site.phoneDisplay} or send your name, city, and the service you need.`;
 ---
 
 <BaseLayout title={title} description={description}>
@@ -24,30 +22,19 @@ const description =
   <section class="section">
     <div class="wrap contact-grid">
       <div>
-        {
-          form.ready ? (
-            <p>Tell us about the project. A photo of the area helps.</p>
-          ) : (
-            <p class="form-note">
-              The online form is not connected yet, so it will not deliver on its own. Call or email,
-              or fill this out and use “Email this request.” Mention a photo if you have one and James
-              can take it from the call.
-            </p>
-          )
-        }
+        <p>Tell James what you want done and the city. Photos can come later by email or text.</p>
         <QuoteForm />
       </div>
       <aside class="contact-aside">
         <h2>Talk to James</h2>
         <p><a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a></p>
         <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
+        <p>{site.displayArea}</p>
+        <p>{site.yelp.label}</p>
         <p>
-          {site.displayArea}
+          <a href={site.facebook.url} rel="noopener noreferrer">Jamestudio Construction on Facebook</a>
         </p>
-        <p>
-          <a href={site.facebook.url} rel="noopener noreferrer">{site.facebook.label}</a>
-        </p>
-        <p>{site.tagline}</p>
+        <p>Insured, with a warranty on the work.</p>
       </aside>
     </div>
   </section>

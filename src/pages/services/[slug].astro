@@ -67,7 +67,7 @@ const description = service.meta;
                       src={photo.src}
                       alt={photo.alt}
                       sizes="(min-width: 980px) 340px, (min-width: 720px) 45vw, 100vw"
-                      widths={[400, 640, 800]}
+                      widths={photo.soft ? [320, 480] : [400, 720]}
                     />
                   </div>
                   <figcaption>{photo.caption}</figcaption>

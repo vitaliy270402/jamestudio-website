@@ -1,5 +1,5 @@
 /**
- * Job photos for James Studio Construction.
+ * Job photos for Jamestudio Construction.
  *
  * Drop new images in src/assets/gallery/ (jpg, png, or webp). Add a matching
  * entry below so the photo is categorized and captioned. Files with no entry
@@ -10,18 +10,34 @@
  * in the folder because the yard in that shot has children's toys.
  */
 import type { ImageMetadata } from "astro";
+import { newWork } from "./newWork";
 
 export const categories = [
   { id: "pergolas", label: "Pergolas & Covered Patios" },
   { id: "fences", label: "Fences" },
   { id: "bathrooms", label: "Bathroom Remodels" },
+  { id: "kitchens", label: "Kitchens" },
+  { id: "hardscape", label: "Hardscape & Stone" },
+  { id: "painting", label: "Painting" },
   { id: "roofing", label: "Roofing & Siding" },
   { id: "decks", label: "Decks" },
+  { id: "openings", label: "Doors & Windows" },
+  { id: "flooring", label: "Flooring" },
+  { id: "remodels", label: "Whole-home" },
   { id: "carpentry", label: "Built-ins & Carpentry" },
 ] as const;
 
 export type CategoryId = (typeof categories)[number]["id"];
-export type StoryId = "patio" | "tub" | "bath-progress" | "shelves";
+export type StoryId =
+  | "patio"
+  | "tub"
+  | "bath-progress"
+  | "shelves"
+  | "siding"
+  | "garage"
+  | "fireplace"
+  | "drain"
+  | "planter";
 
 export type PhotoRecord = {
   id: string;
@@ -33,6 +49,12 @@ export type PhotoRecord = {
   /** 1–6, in the order James's hero candidates should appear. */
   hero?: number;
   featured?: boolean;
+  /** Shown in the homepage recent-work grid. */
+  highlight?: boolean;
+  /** Crew-at-work photo for the homepage and about page. */
+  crew?: boolean;
+  /** Soft frame. Show it small, never as a hero. */
+  soft?: boolean;
   story?: StoryId;
   step?: number;
   stepLabel?: string;
@@ -46,7 +68,7 @@ const catalog: PhotoRecord[] = [
     caption: "Cedar pergola with a metal roof",
     category: "pergolas",
     services: ["covered-patios", "fencing-pergolas", "concrete-patio-slabs"],
-    hero: 1,
+    featured: true,
   },
   {
     id: "484344220",
@@ -376,6 +398,7 @@ const catalog: PhotoRecord[] = [
     category: "roofing",
     services: ["metal-roofing", "shingle-roofing", "covered-patios"],
   },
+  ...(newWork as PhotoRecord[]),
 ];
 
 const modules = import.meta.glob<{ default: ImageMetadata }>(
@@ -408,7 +431,7 @@ export const extraPhotos: Photo[] = Object.entries(modules)
     return {
       id,
       file,
-      alt: "James Studio Construction project photo",
+      alt: "Jamestudio Construction project photo",
       caption: "Project photo",
       category: "pergolas",
       services: [],
@@ -422,6 +445,14 @@ export function heroes() {
 
 export function featuredPhotos() {
   return photos.filter((photo) => photo.featured);
+}
+
+export function highlightPhotos() {
+  return photos.filter((photo) => photo.highlight);
+}
+
+export function crewPhotos() {
+  return photos.filter((photo) => photo.crew);
 }
 
 export function photosInCategory(id: CategoryId) {

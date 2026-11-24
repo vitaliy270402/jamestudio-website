@@ -4,12 +4,18 @@ import Photo from "../components/Photo.astro";
 import { categories, categoryLabel, extraPhotos, photos, storySteps } from "../data/gallery";
 import { site } from "../config/site";
 
-const title = "Project Gallery | James Studio Construction";
-const description =
-  "Photos of James Studio Construction’s remodels, patio covers, fences, decks, roofing, siding, and built-in shelving in the Dallas and Fort Worth area.";
+const title = `Project Gallery | ${site.legalName}`;
+const description = `Photos of ${site.legalName} remodels, hardscape, fences, roofs, siding, kitchens, and baths in ${site.serviceAreaLabel}.`;
 const all = [...photos, ...extraPhotos];
-const shelves = storySteps("shelves");
-const bathProgress = storySteps("bath-progress");
+const comparisons = [
+  { title: "Siding", steps: storySteps("siding") },
+  { title: "Garage doors", steps: storySteps("garage") },
+  { title: "Planter and walkway", steps: storySteps("planter") },
+  { title: "Trench drain", steps: storySteps("drain") },
+  { title: "Fireplace", steps: storySteps("fireplace") },
+  { title: "Built-in shelving", steps: storySteps("shelves") },
+  { title: "Bathroom remodel", steps: storySteps("bath-progress") },
+];
 ---
 
 <BaseLayout title={title} description={description}>
@@ -22,58 +28,41 @@ const bathProgress = storySteps("bath-progress");
       </ol>
       <h1>Project gallery</h1>
       <p>
-        Finished work and a few in-progress shots from {site.legalName}. These are James’s own
-        projects, not stock photos.
+        Finished work and in-progress shots from {site.legalName}. These are James’s own projects, not stock photos.
       </p>
     </div>
   </header>
 
-  <section class="section cream" aria-labelledby="compare-heading">
+  <section class="section cream" id="comparisons" aria-labelledby="compare-heading">
     <div class="wrap">
       <div class="section-head">
         <h2 id="compare-heading">Before and after</h2>
         <p>The same projects, earlier in the work and further along.</p>
       </div>
-      <h3>Built-in shelving</h3>
-      <div class="compare" style="margin: 0.8rem 0 2rem">
-        {
-          shelves.flatMap((step) =>
-            step.photos.map((photo) => (
-              <figure>
-                <span class="compare-tag">{photo.stepLabel}</span>
-                <div class="frame-fill">
-                  <Photo
-                    src={photo.src}
-                    alt={photo.alt}
-                    sizes="(min-width: 720px) 45vw, 100vw"
-                    widths={[480, 800]}
-                  />
-                </div>
-              </figure>
-            )),
-          )
-        }
-      </div>
-      <h3>Bathroom remodel</h3>
-      <div class="compare" style="margin-top: 0.8rem">
-        {
-          bathProgress.flatMap((step) =>
-            step.photos.map((photo) => (
-              <figure>
-                <span class="compare-tag">{photo.stepLabel}</span>
-                <div class="frame-fill">
-                  <Photo
-                    src={photo.src}
-                    alt={photo.alt}
-                    sizes="(min-width: 720px) 45vw, 100vw"
-                    widths={[480, 800]}
-                  />
-                </div>
-              </figure>
-            )),
-          )
-        }
-      </div>
+      {
+        comparisons.map((story) => (
+          <article class="story">
+            <h3>{story.title}</h3>
+            <div class="compare">
+              {story.steps.flatMap((step) =>
+                step.photos.map((photo) => (
+                  <figure>
+                    <span class="compare-tag">{photo.stepLabel}</span>
+                    <div class="frame-fill">
+                      <Photo
+                        src={photo.src}
+                        alt={photo.alt}
+                        sizes="(min-width: 720px) 30vw, 100vw"
+                        widths={photo.soft ? [360, 560] : [480, 800]}
+                      />
+                    </div>
+                  </figure>
+                )),
+              )}
+            </div>
+          </article>
+        ))
+      }
     </div>
   </section>
 
@@ -96,7 +85,7 @@ const bathProgress = storySteps("bath-progress");
                     src={photo.src}
                     alt={photo.alt}
                     sizes="(min-width: 980px) 340px, (min-width: 720px) 45vw, 100vw"
-                    widths={[400, 640, 960]}
+                        widths={photo.soft ? [320, 480] : [400, 720]}
                   />
                 </div>
                 <span class="caption">

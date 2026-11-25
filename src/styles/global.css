@@ -1154,20 +1154,216 @@ h3 {
   resize: vertical;
 }
 
+[hidden] {
+  display: none !important;
+}
+
+.dropzone {
+  position: relative;
+  width: 100%;
+}
+
 .file-input {
   position: absolute;
-  width: 1px;
-  height: 1px;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  font-size: 0;
+}
+
+.dropzone-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  width: 100%;
+  min-height: 10.5rem;
+  padding: 1.5rem 1.1rem;
+  border: 1.5px dashed rgba(31, 30, 61, 0.28);
+  border-radius: 18px;
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(242, 126, 23, 0.08), transparent 55%),
+    linear-gradient(180deg, #fff 0%, #f7f4ef 100%);
+  color: var(--navy);
+  text-align: center;
+  pointer-events: none;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.dropzone-card strong {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.4vw, 1.7rem);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  line-height: 1.05;
+}
+
+.dropzone-card span {
+  color: var(--muted);
+  font-size: 0.98rem;
+}
+
+.dropzone-icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  color: var(--orange);
+}
+
+.dropzone:hover .dropzone-card,
+.dropzone:focus-within .dropzone-card,
+.dropzone.is-drag .dropzone-card {
+  border-color: var(--orange);
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(242, 126, 23, 0.16), transparent 58%),
+    #fff;
+  box-shadow: 0 14px 34px rgba(242, 126, 23, 0.14);
+  transform: translateY(-1px);
+}
+
+.dropzone:focus-within .dropzone-card {
+  outline: 3px solid var(--navy);
+  outline-offset: 3px;
+}
+
+.file-chips {
+  list-style: none;
+  display: grid;
+  gap: 0.55rem;
+  margin: 0.85rem 0 0;
   padding: 0;
-  margin: -1px;
+}
+
+.file-chips:empty {
+  display: none;
+}
+
+.file-chip {
+  display: grid;
+  grid-template-columns: 3.25rem minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.45rem 0.45rem 0.45rem 0.45rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.file-thumb {
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 10px;
   overflow: hidden;
-  clip: rect(0 0 0 0);
+  display: grid;
+  place-items: center;
+  background: var(--navy);
+  color: #fff;
+}
+
+.file-thumb img,
+.file-thumb svg {
+  width: 100%;
+  height: 100%;
+}
+
+.file-thumb img {
+  object-fit: cover;
+}
+
+.file-thumb svg {
+  width: 1.45rem;
+  height: 1.45rem;
+}
+
+.file-meta {
+  min-width: 0;
+}
+
+.file-name {
+  display: block;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.file-bar {
+  display: block;
+  height: 0.28rem;
+  margin-top: 0.4rem;
+  border-radius: 99px;
+  background: #efeae3;
+  overflow: hidden;
+}
+
+.file-bar[hidden] {
+  display: none;
+}
+
+.file-bar span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--orange);
+  transition: width 0.2s linear;
+}
+
+.file-x {
+  width: 2.75rem;
+  height: 2.75rem;
   border: 0;
+  border-radius: 999px;
+  background: #f3f0eb;
+  color: var(--navy);
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.file-x:hover,
+.file-x:focus-visible {
+  background: var(--navy);
+  color: #fff;
+}
+
+.upload-progress {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 0.75rem;
+}
+
+.upload-progress[hidden] {
+  display: none;
+}
+
+.upload-progress-track {
+  height: 0.35rem;
+  background: #efeae3;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.upload-progress-bar {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--orange) 0%, #ffb15a 100%);
+  transition: width 0.2s linear;
+}
+
+.upload-progress p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
 }
 
 .file-btn {
   justify-self: start;
+  margin-top: 0.6rem;
   background: #fff;
   color: var(--navy);
   border-color: var(--navy);
@@ -1176,56 +1372,6 @@ h3 {
 .file-btn:hover {
   background: var(--navy);
   color: #fff;
-}
-
-.file-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: 0.45rem;
-}
-
-.file-list:empty {
-  display: none;
-}
-
-.file-list li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  border: 1px solid var(--line);
-  background: #fff;
-  padding: 0.35rem 0.35rem 0.35rem 0.75rem;
-}
-
-.file-list p {
-  margin: 0;
-  min-width: 0;
-}
-
-.file-list p span {
-  display: block;
-  overflow-wrap: anywhere;
-}
-
-.file-remove {
-  flex: 0 0 auto;
-  min-width: 2.75rem;
-  min-height: 2.75rem;
-  border: 1px solid var(--line);
-  background: #fff;
-  color: var(--navy);
-  font: inherit;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.file-remove:hover,
-.file-remove:focus-visible {
-  border-color: var(--navy);
-  background: var(--cream);
 }
 
 .hint {

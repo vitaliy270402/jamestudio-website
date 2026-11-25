@@ -153,6 +153,16 @@ export const site = {
     netlifyFormName: "free-estimate",
   },
 
+  /**
+   * Large estimate files upload straight to Drive. Leave scriptUrl empty until
+   * the Apps Script web app is deployed; the upload control stays hidden.
+   * Paste the /exec URL here when it is ready.
+   */
+  uploads: {
+    scriptUrl: "",
+    maxBytes: 2 * 1024 * 1024 * 1024,
+  },
+
   brand: {
     navy: "#1F1E3D",
     orange: "#F27E17",

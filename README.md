@@ -36,7 +36,9 @@ The public address is `contact@jamestudioconstruction.com`, set as `email` in `s
 
 The estimate form posts to [FormSubmit](https://formsubmit.co) through the activated alias in `form.formsubmitId`. That alias delivers to `contact@jamestudioconstruction.com`. Submissions arrive as a table with the subject “Free estimate request — Jamestudio Construction.”
 
-The form asks for name, phone, email, city, service, and message, plus optional photos or a PDF (JPG, PNG, HEIC, WebP, or PDF, 5 MB total). It sends those files as multipart form data. It checks the fields in the browser, shows a success or error state, and keeps the phone number and email on the page. There is a honeypot field.
+The form asks for name, phone, email, city, service, and message. It checks those fields in the browser, shows a success or error state, and keeps the phone number and email on the page. There is a honeypot field.
+
+Optional photos, videos, and documents (2 GB total) upload to Google Drive when `uploads.scriptUrl` in `src/config/site.ts` is the deployed Apps Script URL. While that value is empty, the upload control is hidden and the form still sends. See `apps-script/README.md` to deploy the script.
 
 To point the form at a different inbox later, activate a new FormSubmit alias for that address and put it in `form.formsubmitId`. `form.provider` is `"formsubmit"`.
 

@@ -8,6 +8,8 @@ const formsubmitId = site.form.formsubmitId.trim();
 const plainAction = form.ready && formsubmitId
   ? `https://formsubmit.co/${formsubmitId}`
   : "#estimate";
+const uploadUrl = site.uploads.scriptUrl.trim();
+const maxBytes = site.uploads.maxBytes;
 ---
 
 <form
@@ -21,6 +23,8 @@ const plainAction = form.ready && formsubmitId
   data-ajax={ajaxAction}
   data-email={site.email}
   data-phone={site.phoneDisplay}
+  data-upload-url={uploadUrl || undefined}
+  data-max-bytes={String(maxBytes)}
   novalidate
 >
   <input type="hidden" name="_subject" value="Free estimate request — Jamestudio Construction" />
@@ -72,22 +76,51 @@ const plainAction = form.ready && formsubmitId
     <span class="field-error" data-error-for="message"></span>
   </label>
 
-  <div class="field">
-    <span id="files-label">Photos or files <span class="hint">(optional)</span></span>
-    <input
-      id="estimate-files"
-      class="file-input"
-      type="file"
-      name="attachment"
-      accept=".jpg,.jpeg,.png,.heic,.webp,.pdf,image/jpeg,image/png,image/heic,image/webp,application/pdf"
-      multiple
-      aria-labelledby="files-label"
-    />
-    <button class="btn file-btn" type="button" data-file-trigger>Add photos or files</button>
-    <ul class="file-list" data-file-list></ul>
-    <span class="hint">JPG, PNG, HEIC, WebP, or PDF. 5 MB total.</span>
-    <span class="field-error" data-error-for="files"></span>
-  </div>
+  {
+    uploadUrl && (
+      <div class="field">
+        <div class="dropzone" data-dropzone>
+          <input
+            id="estimate-files"
+            class="file-input"
+            type="file"
+            accept=".jpg,.jpeg,.png,.heic,.heif,.webp,.gif,.mp4,.mov,.m4v,.webm,.pdf,.doc,.docx,.txt,.rtf,.odt,.xls,.xlsx,.csv,.ppt,.pptx,image/*,video/*,application/pdf"
+            multiple
+            aria-label="Drag and drop photos or videos, or tap to browse. Up to 2 GB."
+          />
+          <div class="dropzone-card">
+            <svg class="dropzone-icon" viewBox="0 0 48 48" aria-hidden="true">
+              <path
+                fill="currentColor"
+                d="M14 32h20a8 8 0 0 0 1.2-15.9A12 12 0 0 0 12.4 18 7 7 0 0 0 14 32zm10-4 6-6h-4v-6h-4v6h-4l6 6z"
+              />
+            </svg>
+            <strong>Drag & drop photos or videos</strong>
+            <span>or tap to browse · up to 2 GB</span>
+          </div>
+        </div>
+        <ul class="file-chips" data-file-list aria-live="polite"></ul>
+        <div class="upload-progress" data-upload-progress hidden>
+          <div
+            class="upload-progress-track"
+            data-upload-track
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+            aria-label="Overall upload progress"
+          >
+            <div class="upload-progress-bar" data-upload-bar></div>
+          </div>
+          <p data-upload-label aria-live="polite"></p>
+        </div>
+        <span class="field-error" data-error-for="files"></span>
+        <button class="btn file-btn" type="button" data-send-without hidden>
+          Send without the files
+        </button>
+      </div>
+    )
+  }
 
   <button class="btn btn-orange" type="submit">Request my free estimate</button>
   <p class="form-status" data-form-status role="status"></p>
@@ -107,12 +140,20 @@ const plainAction = form.ready && formsubmitId
   const success = form?.querySelector<HTMLElement>("[data-form-success]");
   if (form && status && success) {
     const fields = ["name", "phone", "email", "city", "service", "message", "files"] as const;
-    const maxBytes = 5 * 1024 * 1024;
-    const allowed = new Set(["jpg", "jpeg", "png", "heic", "webp", "pdf"]);
+    const uploadUrl = form.dataset.uploadUrl ?? "";
+    const maxBytes = Number(form.dataset.maxBytes ?? 0) || 2 * 1024 * 1024 * 1024;
+    const chunkSize = 8 * 1024 * 1024;
+    const allowed = new Set([
+      "jpg", "jpeg", "png", "heic", "heif", "webp", "gif",
+      "mp4", "mov", "m4v", "webm",
+      "pdf", "doc", "docx", "txt", "rtf", "odt",
+      "xls", "xlsx", "csv", "ppt", "pptx",
+    ]);
     const fileInput = form.querySelector<HTMLInputElement>("#estimate-files");
     const fileList = form.querySelector<HTMLUListElement>("[data-file-list]");
-    const fileTrigger = form.querySelector<HTMLButtonElement>("[data-file-trigger]");
+    const dropzone = form.querySelector<HTMLElement>("[data-dropzone]");
     let chosen: File[] = [];
+    let thumbs: string[] = [];
 
     function extension(file: File) {
       const parts = file.name.split(".");
@@ -125,29 +166,78 @@ const plainAction = form.ready && formsubmitId
       return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
     }
 
+    function isImage(file: File) {
+      const ext = extension(file);
+      return file.type.startsWith("image/") && !["heic", "heif"].includes(ext)
+        || ["jpg", "jpeg", "png", "webp", "gif"].includes(ext);
+    }
+
+    function isVideo(file: File) {
+      return file.type.startsWith("video/") || ["mp4", "mov", "m4v", "webm"].includes(extension(file));
+    }
+
+    function icon(kind: "video" | "doc") {
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("viewBox", "0 0 24 24");
+      svg.setAttribute("aria-hidden", "true");
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("fill", "currentColor");
+      path.setAttribute(
+        "d",
+        kind === "video"
+          ? "M4 6.5A2.5 2.5 0 0 1 6.5 4h7A2.5 2.5 0 0 1 16 6.5V9l4-2v10l-4-2v2.5a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 4 17.5v-11z"
+          : "M6 2h8l4 4v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm7 1.5V7h3.5L13 3.5zM8 12h8v1.5H8V12zm0 3.5h8V17H8v-1.5z",
+      );
+      svg.append(path);
+      return svg;
+    }
+
     function renderFiles() {
       if (!fileList) return;
+      for (const url of thumbs) URL.revokeObjectURL(url);
+      thumbs = [];
       fileList.replaceChildren();
       for (const [index, file] of chosen.entries()) {
         const item = document.createElement("li");
-        const text = document.createElement("p");
+        item.className = "file-chip";
+        item.dataset.fileIndex = String(index);
+        const thumb = document.createElement("span");
+        thumb.className = "file-thumb";
+        if (isImage(file)) {
+          const img = document.createElement("img");
+          const url = URL.createObjectURL(file);
+          thumbs.push(url);
+          img.src = url;
+          img.alt = "";
+          thumb.append(img);
+        } else {
+          thumb.append(icon(isVideo(file) ? "video" : "doc"));
+        }
+        const meta = document.createElement("div");
+        meta.className = "file-meta";
         const name = document.createElement("span");
+        name.className = "file-name";
         name.textContent = file.name;
         const size = document.createElement("span");
         size.className = "hint";
         size.textContent = formatSize(file.size);
-        text.append(name, size);
+        const track = document.createElement("span");
+        track.className = "file-bar";
+        track.hidden = true;
+        const fill = document.createElement("span");
+        track.append(fill);
+        meta.append(name, size, track);
         const remove = document.createElement("button");
         remove.type = "button";
-        remove.className = "file-remove";
-        remove.textContent = "Remove";
+        remove.className = "file-x";
+        remove.textContent = "×";
         remove.setAttribute("aria-label", `Remove ${file.name}`);
         remove.addEventListener("click", () => {
           chosen.splice(index, 1);
           renderFiles();
           setError("files", "");
         });
-        item.append(text, remove);
+        item.append(thumb, meta, remove);
         fileList.append(item);
       }
     }
@@ -157,12 +247,12 @@ const plainAction = form.ready && formsubmitId
       let error = "";
       for (const file of files) {
         if (!allowed.has(extension(file))) {
-          error = `${file.name} needs to be a JPG, PNG, HEIC, WebP, or PDF.`;
+          error = `${file.name} needs to be a photo, video, PDF, or document.`;
           continue;
         }
         const total = next.reduce((sum, item) => sum + item.size, 0) + file.size;
         if (file.size > maxBytes || total > maxBytes) {
-          error = "Those files are over 5 MB total. Remove one or send smaller photos.";
+          error = "Those files are over 2 GB total. Remove one or send a smaller batch.";
           continue;
         }
         next.push(file);
@@ -172,11 +262,28 @@ const plainAction = form.ready && formsubmitId
       renderFiles();
     }
 
-    fileTrigger?.addEventListener("click", () => fileInput?.click());
     fileInput?.addEventListener("change", () => {
       addFiles([...(fileInput.files ?? [])]);
       fileInput.value = "";
     });
+    if (dropzone) {
+      for (const eventName of ["dragenter", "dragover"]) {
+        dropzone.addEventListener(eventName, (event) => {
+          event.preventDefault();
+          dropzone.classList.add("is-drag");
+        });
+      }
+      for (const eventName of ["dragleave", "drop"]) {
+        dropzone.addEventListener(eventName, (event) => {
+          event.preventDefault();
+          if (eventName === "dragleave" && dropzone.contains(event.relatedTarget as Node | null)) return;
+          dropzone.classList.remove("is-drag");
+        });
+      }
+      dropzone.addEventListener("drop", (event) => {
+        addFiles([...(event.dataTransfer?.files ?? [])]);
+      });
+    }
 
     function control(name: string) {
       return form.querySelector<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(
@@ -244,18 +351,54 @@ const plainAction = form.ready && formsubmitId
       if (button) button.disabled = true;
       status.textContent = "Sending…";
       try {
-        const data = new FormData();
-        data.set("name", values.name);
-        data.set("phone", values.phone);
-        data.set("email", values.email);
-        data.set("city", values.city);
-        data.set("service", values.service);
-        data.set("message", values.message);
-        data.set("_replyto", values.email);
-        data.set("_subject", "Free estimate request — Jamestudio Construction");
-        data.set("_template", "table");
-        data.set("_captcha", "false");
-        for (const file of chosen) data.append("attachment", file, file.name);
+        let driveNote = "";
+        if (uploadUrl && chosen.length > 0) {
+          driveNote = await uploadChosen();
+        }
+        await deliver(values, driveNote);
+      } catch (error) {
+        const raw = error instanceof Error ? error.message : "";
+        const phoneText = form.dataset.phone ?? "";
+        const email = form.dataset.email ?? "";
+        const friendly = /space|room/i.test(raw)
+          ? raw
+          : `We couldn't send the files. Call ${phoneText} or email ${email} and James will follow up.`;
+        status.textContent = friendly;
+        const skip = form.querySelector<HTMLButtonElement>("[data-send-without]");
+        if (skip && chosen.length > 0) {
+          skip.hidden = false;
+          skip.onclick = () => {
+            chosen = [];
+            renderFiles();
+            skip.hidden = true;
+            status.textContent = "Sending…";
+            void deliver(values, "").catch(() => {
+              status.textContent = `That did not send. Call ${phoneText} or email ${email} and James will follow up.`;
+              if (button) button.disabled = false;
+            });
+          };
+        }
+        if (button) button.disabled = false;
+      }
+    });
+
+    async function deliver(
+      values: { name: string; phone: string; email: string; city: string; service: string; message: string },
+      driveNote: string,
+    ) {
+      const data = new FormData();
+      data.set("name", values.name);
+      data.set("phone", values.phone);
+      data.set("email", values.email);
+      data.set("city", values.city);
+      data.set("service", values.service);
+      data.set("message", values.message);
+      data.set("_replyto", values.email);
+      data.set("_subject", "Free estimate request — Jamestudio Construction");
+      data.set("_template", "table");
+      data.set("_captcha", "false");
+      if (driveNote) data.set("Drive files", driveNote);
+      try {
         const response = await fetch(form.dataset.ajax ?? form.action, {
           method: "POST",
           body: data,
@@ -263,10 +406,7 @@ const plainAction = form.ready && formsubmitId
         });
         const body = (await response.json().catch(() => ({}))) as { success?: string | boolean; message?: string };
         const ok = response.ok && body.success !== false && body.success !== "false";
-        if (!ok) {
-          const detail = body.message?.trim();
-          throw new Error(detail || "Request failed");
-        }
+        if (!ok) throw new Error(body.message?.trim() || "Request failed");
         form.reset();
         chosen = [];
         renderFiles();
@@ -275,16 +415,155 @@ const plainAction = form.ready && formsubmitId
         status.textContent = "";
         success.hidden = false;
         success.focus();
-      } catch (error) {
-        const raw = error instanceof Error ? error.message : "";
-        const technical = /failed to fetch|networkerror|request failed/i.test(raw);
-        const detail = raw && !technical ? `${raw} ` : "";
-        const phoneText = form.dataset.phone ?? "";
-        const email = form.dataset.email ?? "";
-        status.textContent = `${detail}That did not send. Call ${phoneText} or email ${email} and James will follow up.`;
-      } finally {
-        if (button) button.disabled = false;
+      } catch {
+        const note = form.querySelector<HTMLInputElement>('[name="Drive files"]')
+          ?? document.createElement("input");
+        note.type = "hidden";
+        note.name = "Drive files";
+        note.value = driveNote;
+        if (!note.parentElement) form.append(note);
+        const reply = form.querySelector<HTMLInputElement>('[name="_replyto"]')
+          ?? document.createElement("input");
+        reply.type = "hidden";
+        reply.name = "_replyto";
+        reply.value = values.email;
+        if (!reply.parentElement) form.append(reply);
+        form.submit();
       }
-    });
+    }
+
+    async function uploadChosen() {
+      const progress = form.querySelector<HTMLElement>("[data-upload-progress]");
+      const bar = form.querySelector<HTMLElement>("[data-upload-bar]");
+      const track = form.querySelector<HTMLElement>("[data-upload-track]");
+      const label = form.querySelector<HTMLElement>("[data-upload-label]");
+      const totalBytes = chosen.reduce((sum, file) => sum + file.size, 0);
+      const space = await callScript({ action: "quota" });
+      if (!space.ok) throw new Error(space.error || "Upload service unavailable");
+      if (typeof space.remaining === "number" && space.remaining < totalBytes) {
+        throw new Error("There isn't room for those files right now. Call or email and James will take it from there.");
+      }
+      if (progress) progress.hidden = false;
+      let folderId = "";
+      let folderUrl = "";
+      const links: string[] = [];
+      let sentBefore = 0;
+      for (const file of chosen) {
+        const started = await callScript({
+          action: "start",
+          name: file.name,
+          mime: file.type || "application/octet-stream",
+          size: String(file.size),
+          folderId,
+        });
+        if (!started.ok || !started.sessionUrl) {
+          throw new Error(started.error || "Could not start the upload.");
+        }
+        folderId = started.folderId || folderId;
+        folderUrl = started.folderUrl || folderUrl;
+        const chipBar = fileList?.querySelector<HTMLElement>(
+          `[data-file-index="${chosen.indexOf(file)}"] .file-bar`,
+        );
+        const chipFill = chipBar?.querySelector<HTMLElement>("span");
+        if (chipBar) chipBar.hidden = false;
+        const fileId = await uploadFile(file, started.sessionUrl, (loaded) => {
+          const pct = Math.min(100, Math.round(((sentBefore + loaded) / totalBytes) * 100));
+          const filePct = Math.min(100, Math.round((loaded / file.size) * 100));
+          if (bar) bar.style.width = `${pct}%`;
+          if (track) track.setAttribute("aria-valuenow", String(pct));
+          if (chipFill) chipFill.style.width = `${filePct}%`;
+          if (label) label.textContent = `Uploading ${file.name}… ${pct}%`;
+        });
+        sentBefore += file.size;
+        const linked = await callScript({ action: "link", fileId });
+        const url = linked.url || `https://drive.google.com/file/d/${fileId}/view`;
+        links.push(`${file.name}: ${url}`);
+      }
+      if (label) label.textContent = "Files received. Sending the request…";
+      const lines = folderUrl ? [`Folder: ${folderUrl}`, ...links] : links;
+      return lines.join("\n");
+    }
+
+    function callScript(params: Record<string, string>) {
+      return new Promise<{
+        ok: boolean;
+        error?: string;
+        remaining?: number;
+        sessionUrl?: string;
+        folderId?: string;
+        folderUrl?: string;
+        url?: string;
+      }>((resolve, reject) => {
+        const cb = `jscb_${Math.random().toString(36).slice(2)}`;
+        const timer = window.setTimeout(() => {
+          cleanup();
+          reject(new Error("The upload service did not respond."));
+        }, 25000);
+        const script = document.createElement("script");
+        function cleanup() {
+          window.clearTimeout(timer);
+          delete (window as unknown as Record<string, unknown>)[cb];
+          script.remove();
+        }
+        (window as unknown as Record<string, (data: unknown) => void>)[cb] = (data) => {
+          cleanup();
+          resolve(data as { ok: boolean });
+        };
+        const url = new URL(uploadUrl);
+        for (const [key, value] of Object.entries(params)) url.searchParams.set(key, value);
+        url.searchParams.set("origin", location.origin);
+        url.searchParams.set("callback", cb);
+        script.src = url.toString();
+        script.onerror = () => {
+          cleanup();
+          reject(new Error("The upload service did not respond."));
+        };
+        document.head.append(script);
+      });
+    }
+
+    function uploadFile(file: File, sessionUrl: string, onProgress: (loaded: number) => void) {
+      return new Promise<string>((resolve, reject) => {
+        const sendFrom = (start: number, attempt: number) => {
+          const end = Math.min(start + chunkSize, file.size);
+          const xhr = new XMLHttpRequest();
+          xhr.open("PUT", sessionUrl);
+          xhr.setRequestHeader("Content-Range", `bytes ${start}-${end - 1}/${file.size}`);
+          xhr.upload.onprogress = (event) => {
+            onProgress(start + (event.loaded || 0));
+          };
+          xhr.onload = () => {
+            if (xhr.status === 200 || xhr.status === 201) {
+              try {
+                const body = JSON.parse(xhr.responseText || "{}") as { id?: string };
+                if (!body.id) throw new Error("missing id");
+                resolve(body.id);
+              } catch {
+                reject(new Error("The upload finished without a file link."));
+              }
+              return;
+            }
+            if (xhr.status === 308) {
+              const range = xhr.getResponseHeader("Range");
+              const match = range ? /bytes=(\d+)-(\d+)/.exec(range) : null;
+              const next = match ? Number(match[2]) + 1 : end;
+              sendFrom(next, 0);
+              return;
+            }
+            if (attempt < 2) {
+              sendFrom(start, attempt + 1);
+              return;
+            }
+            reject(new Error("The upload was interrupted."));
+          };
+          xhr.onerror = () => {
+            if (attempt < 2) sendFrom(start, attempt + 1);
+            else reject(new Error("The upload was interrupted."));
+          };
+          xhr.send(file.slice(start, end));
+        };
+        sendFrom(0, 0);
+      });
+    }
   }
 </script>

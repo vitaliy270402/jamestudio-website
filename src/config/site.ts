@@ -141,6 +141,11 @@ export const site = {
      * "formspree" | "web3forms" | "netlify"
      */
     provider: "formsubmit" as "" | "formspree" | "web3forms" | "netlify" | "formsubmit",
+    /**
+     * Activated FormSubmit alias for contact@jamestudioconstruction.com.
+     * Submissions go to that inbox without putting the address in the form action.
+     */
+    formsubmitId: "bbcaa55d9d6baefbe05c2a237c1ade4e",
     /** The id in https://formspree.io/f/YOUR_ID */
     formspreeId: "",
     /** Web3Forms access key. The key is tied to the inbox that should get leads. */
@@ -498,11 +503,12 @@ export function formState() {
       accessKey: web3formsAccessKey.trim(),
     };
   }
-  if (provider === "formsubmit") {
+  if (provider === "formsubmit" && site.form.formsubmitId.trim()) {
+    const id = site.form.formsubmitId.trim();
     return {
       ready: true as const,
       provider,
-      action: `https://formsubmit.co/ajax/${encodeURIComponent(site.email)}`,
+      action: `https://formsubmit.co/ajax/${id}`,
       name: "free-estimate",
       accessKey: "",
     };

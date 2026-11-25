@@ -1154,6 +1154,80 @@ h3 {
   resize: vertical;
 }
 
+.file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.file-btn {
+  justify-self: start;
+  background: #fff;
+  color: var(--navy);
+  border-color: var(--navy);
+}
+
+.file-btn:hover {
+  background: var(--navy);
+  color: #fff;
+}
+
+.file-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.file-list:empty {
+  display: none;
+}
+
+.file-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border: 1px solid var(--line);
+  background: #fff;
+  padding: 0.35rem 0.35rem 0.35rem 0.75rem;
+}
+
+.file-list p {
+  margin: 0;
+  min-width: 0;
+}
+
+.file-list p span {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.file-remove {
+  flex: 0 0 auto;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--navy);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.file-remove:hover,
+.file-remove:focus-visible {
+  border-color: var(--navy);
+  background: var(--cream);
+}
+
 .hint {
   color: var(--muted);
   font-size: 0.92rem;

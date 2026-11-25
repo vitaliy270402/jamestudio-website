@@ -34,11 +34,11 @@ Hours and the license number are unknown. The site hides them while those fields
 
 The public address is `contact@jamestudioconstruction.com`, set as `email` in `src/config/site.ts`. That value is what the contact page, footer, `mailto:` links, the estimate form’s email fallback, and the structured data use.
 
-The estimate form posts to [FormSubmit](https://formsubmit.co) at `contact@jamestudioconstruction.com`. The first submission to a new inbox sends FormSubmit’s activation email. Someone has to open that message and confirm the address before leads are delivered. After that, submissions arrive as a table with the subject “Free estimate request — Jamestudio Construction.”
+The estimate form posts to [FormSubmit](https://formsubmit.co) through the activated alias in `form.formsubmitId`. That alias delivers to `contact@jamestudioconstruction.com`. Submissions arrive as a table with the subject “Free estimate request — Jamestudio Construction.”
 
-The form asks for name, phone, email, city, service, and message. It checks those fields in the browser, shows a success or error state, and keeps the phone number and email on the page. There is a honeypot field. Photo upload is not on the form; people can email pictures after they call.
+The form asks for name, phone, email, city, service, and message, plus optional photos or a PDF (JPG, PNG, HEIC, WebP, or PDF, 5 MB total). It sends those files as multipart form data. It checks the fields in the browser, shows a success or error state, and keeps the phone number and email on the page. There is a honeypot field.
 
-To point the form at a different inbox later, change `email` in `src/config/site.ts` and activate FormSubmit for that new address. `form.provider` is `"formsubmit"`.
+To point the form at a different inbox later, activate a new FormSubmit alias for that address and put it in `form.formsubmitId`. `form.provider` is `"formsubmit"`.
 
 ## Add project photos
 

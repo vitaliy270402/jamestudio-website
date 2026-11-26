@@ -159,7 +159,7 @@ export const site = {
    * Paste the /exec URL here when it is ready.
    */
   uploads: {
-    scriptUrl: "",
+    scriptUrl: "https://script.google.com/macros/s/AKfycbwoph4F7uC3Z55u2impPegx-Lz8eXP91d17Cm2rNUoO_n0YDePAHrKsNcNoOmWCsQx5aw/exec",
     maxBytes: 2 * 1024 * 1024 * 1024,
   },
 

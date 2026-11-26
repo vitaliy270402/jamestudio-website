@@ -4,7 +4,7 @@ Do this while signed in as jamesscllc@gmail.com. The script stores files in that
 
 1. Open [script.google.com](https://script.google.com) and create a project named `Jamestudio website uploads`.
 2. Replace the contents of `Code.gs` with `apps-script/Code.gs` from this repo.
-3. Open Project Settings, turn on **Show "appsscript.json" manifest file in editor**, then replace `appsscript.json` with `apps-script/appsscript.json` from this repo. Save both files.
+3. Open Project Settings, turn on **Show "appsscript.json" manifest file in editor**, then replace `appsscript.json` with `apps-script/appsscript.json` from this repo. Save both files. The manifest turns on the **Drive API v3** advanced service (`Drive`, service id `drive`). In the Apps Script editor that is **Services > Drive API > v3**. The Drive API has to be enabled or quota and upload calls fail. The deployed project already has this service on.
 4. Choose **Deploy > New deployment**. Click the gear and select **Web app**.
 5. Set **Execute as** to **Me** and **Who has access** to **Anyone**. Deploy.
 6. Authorize the Drive prompt. The script only asks for files it creates, plus permission to call the Drive API.

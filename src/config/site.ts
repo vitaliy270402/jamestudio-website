@@ -313,10 +313,11 @@ export const services: Service[] = [
     name: "Wood Decks",
     seoName: "Wood Deck Construction",
     group: "Outdoor",
-    summary: "Wood decks, including decks built around existing trees.",
-    meta: "Wood deck construction in Dallas & Fort Worth, TX. Jamestudio Construction builds wood decks, including decks around trees.",
+    summary:
+      "Custom wood decks built to fit your backyard and maximize usable space, for a hot tub, an outdoor kitchen, or around existing trees.",
+    meta: "Custom wood decks in Cedar Hill, Midlothian, Mansfield & DeSoto, TX. Jamestudio Construction builds decks for a hot tub, an outdoor kitchen, or around existing trees.",
     paragraphs: [
-      "Jamestudio Construction builds wood decks for homeowners in the Dallas and Fort Worth area.",
+      "Custom decks built to fit your backyard and make the most of usable space, whether it's for a hot tub or an outdoor kitchen, we can do them all.",
       "Recent decks include straight and curved layouts, railings, steps, and a deck built around a mature tree. Insured, with a warranty.",
     ],
   },
@@ -447,12 +448,14 @@ export const services: Service[] = [
     name: "Flooring & Tile",
     seoName: "Flooring and Tile",
     group: "Remodels",
-    summary: "Flooring and tile, including large-format porcelain.",
-    meta: "Flooring and tile in Cedar Hill, Midlothian, Mansfield & DeSoto, TX. Jamestudio Construction installs tile and flooring as part of a remodel. Free estimates.",
+    summary:
+      "Flooring and tile, including LVP, laminate, hardwood, carpet, epoxy, and large-format porcelain.",
+    meta: "Flooring and tile in Cedar Hill, Midlothian, Mansfield & DeSoto, TX. LVP, laminate, hardwood, carpet, epoxy, and porcelain tile by Jamestudio Construction.",
     paragraphs: [
       "Flooring and tile are part of the remodel work Jamestudio Construction does for homeowners in Cedar Hill, Midlothian, Mansfield, DeSoto, and the rest of Dallas–Fort Worth.",
-      "Recent work includes large-format porcelain tile. Tell James the rooms and the material you have in mind. The company is insured and gives a warranty.",
+      "Recent work includes large-format porcelain tile. The crew also installs LVP, laminate, hardwood, carpet, and epoxy. The company is insured and gives a warranty.",
     ],
+    includes: ["LVP", "Laminate", "Hardwood", "Carpet", "Epoxy", "Large-format porcelain tile"],
   },
   {
     slug: "windows-and-doors",
@@ -652,6 +655,7 @@ export function businessJsonLd(origin: string) {
         itemOffered: {
           "@type": "Service",
           name: service.seoName,
+          description: service.summary,
           url: `${url}/services/${service.slug}/`,
           areaServed: site.schemaArea,
           provider: { "@id": `${url}/#business` },

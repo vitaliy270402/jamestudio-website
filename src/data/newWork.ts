@@ -10,7 +10,7 @@ export const newWork = [
     alt: "Travertine pavers and turf strips beside a pool at a stone house with black-framed glass doors",
     caption: "Travertine pool patio",
     category: "hardscape",
-    services: ["hardscape-stone", "concrete-patio-slabs"],
+    services: ["hardscape-stone", "concrete-work"],
     hero: 1,
   },
   {
@@ -125,7 +125,7 @@ export const newWork = [
     alt: "Concrete formed in the planter trench",
     caption: "Concrete in the trench",
     category: "hardscape",
-    services: ["hardscape-stone", "concrete-patio-slabs"],
+    services: ["hardscape-stone", "concrete-work"],
     story: "planter",
     step: 2,
     stepLabel: "Concrete",
@@ -442,7 +442,7 @@ export const newWork = [
     alt: "Fresh concrete pour repairing a sidewalk",
     caption: "Fresh sidewalk pour",
     category: "hardscape",
-    services: ["concrete-patio-slabs", "house-repairs"],
+    services: ["concrete-work", "house-repairs"],
     highlight: true,
   },
   {

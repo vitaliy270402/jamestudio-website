@@ -322,16 +322,17 @@ export const services: Service[] = [
     ],
   },
   {
-    slug: "concrete-patio-slabs",
-    name: "Concrete Patio Slabs",
-    seoName: "Concrete Patio Slabs",
+    slug: "concrete-work",
+    name: "Concrete Work",
+    seoName: "Concrete Work",
     group: "Outdoor",
-    summary: "Concrete slabs poured as the floor for a new patio or cover.",
-    meta: "Concrete patio slabs in Dallas & Fort Worth, TX. Jamestudio Construction pours slabs for patios and covers across the Dallas and Fort Worth area.",
+    summary: "Concrete patios, driveways, sidewalks, and retaining walls.",
+    meta: "Concrete work in Cedar Hill, Midlothian, Mansfield & DeSoto, TX. Patios, driveways, sidewalks, and retaining walls by Jamestudio Construction.",
     paragraphs: [
-      "Concrete patio slabs are part of the patio work Jamestudio Construction does in the Dallas and Fort Worth area.",
-      "On a recent covered patio, the slab was poured and finished before the posts and roof went up. Ask for a free estimate if you need a slab of your own.",
+      "Jamestudio Construction does concrete patios, driveways, sidewalks, and retaining walls in Cedar Hill, Midlothian, Mansfield, DeSoto, and the rest of Dallas–Fort Worth.",
+      "Recent work includes patio slabs poured before a cover went up, and a sidewalk pour. The company is insured and gives a warranty.",
     ],
+    includes: ["Patios", "Driveways", "Sidewalks", "Retaining walls"],
   },
   {
     slug: "built-in-shelving",
@@ -528,18 +529,6 @@ export const services: Service[] = [
     paragraphs: [
       "Jamestudio Construction tears down houses and outbuildings and hauls off the debris in Cedar Hill, Midlothian, Mansfield, DeSoto, and the rest of Dallas–Fort Worth.",
       "The company is insured and gives a warranty. Call or send the address and what needs to come down.",
-    ],
-  },
-  {
-    slug: "concrete",
-    name: "Concrete",
-    seoName: "Concrete",
-    group: "Site Work",
-    summary: "Concrete flatwork, including slabs, sidewalks, and pads.",
-    meta: "Concrete flatwork in Cedar Hill, Midlothian, Mansfield & DeSoto, TX. Slabs, sidewalks, and pads by Jamestudio Construction.",
-    paragraphs: [
-      "Jamestudio Construction pours concrete flatwork, including slabs, sidewalks, and pads, in Cedar Hill, Midlothian, Mansfield, DeSoto, and the rest of Dallas–Fort Worth.",
-      "Recent work includes patio slabs and a fresh sidewalk pour. The company is insured and gives a warranty.",
     ],
   },
   {

@@ -9,6 +9,10 @@ export default defineConfig({
   base: "/",
   trailingSlash: "always",
   compressHTML: true,
+  redirects: {
+    "/services/concrete-patio-slabs": "/services/concrete-work/",
+    "/services/concrete": "/services/concrete-work/",
+  },
   integrations: [
     sitemap({
       filter: (page) => !page.includes("/thank-you"),

@@ -1,6 +1,6 @@
 # Jamestudio Construction
 
-Marketing site for **Jamestudio Construction** (styled JAMESTUDIO CONSTRUCTION), serving DeSoto, Cedar Hill, Lancaster, and the wider Dallas–Fort Worth area. It is a static [Astro](https://astro.build) site aimed at local Google leads: phone calls and free-estimate requests.
+Marketing site for **Jamestudio Construction** (styled JAMESTUDIO CONSTRUCTION), serving Cedar Hill, Midlothian, Mansfield, DeSoto, and the rest of Dallas–Fort Worth. It is a static [Astro](https://astro.build) site aimed at local Google leads: phone calls and free-estimate requests.
 
 ```bash
 npm install
@@ -28,7 +28,7 @@ All contact details, services, service-area cities, the quote-form backend, and 
 
 Hours and the license number are unknown. The site hides them while those fields are `null`. Do not invent them.
 
-`role: "past"` marks cities where James has done work (McKinney and Garland). DeSoto, Cedar Hill, and Lancaster lead the service area. Other cities are part of the wider Dallas–Fort Worth service area, not a claim that a job was finished there.
+`role: "past"` marks cities where James has done work (McKinney and Garland). Cedar Hill, Midlothian, Mansfield, and DeSoto lead the service area. Other cities are part of the wider Dallas–Fort Worth service area, not a claim that a job was finished there.
 
 ## Public email
 

@@ -9,7 +9,7 @@
  * Do not invent them.
  */
 
-export const serviceGroups = ["Remodels", "Outdoor", "Exterior", "Repairs"] as const;
+export const serviceGroups = ["Remodels", "Outdoor", "Exterior", "Site Work", "Repairs"] as const;
 
 export type ServiceGroup = (typeof serviceGroups)[number];
 
@@ -44,7 +44,7 @@ export const site = {
     "We are insured and give warranty!",
   ],
   description:
-    "Jamestudio Construction is a small, hands-on crew for home remodeling and renovation in DeSoto, Cedar Hill, Lancaster, and the wider Dallas–Fort Worth area.",
+    "Jamestudio Construction is a small, hands-on crew for home remodeling and renovation in Cedar Hill, Midlothian, Mansfield, DeSoto, and the rest of Dallas–Fort Worth.",
 
   phoneDisplay: "(254) 833-7392",
   phoneTel: "+12548337392",
@@ -63,12 +63,12 @@ export const site = {
   },
 
   /** Shown in place of a street address. No street is published. */
-  displayArea: "DeSoto, Cedar Hill, Lancaster, and the Dallas–Fort Worth area, TX",
+  displayArea: "Cedar Hill, Midlothian, Mansfield, DeSoto, and the Dallas–Fort Worth area, TX",
   /** Used in page titles and H1s. */
-  titlePlace: "DeSoto, Cedar Hill & Lancaster, TX",
+  titlePlace: "Cedar Hill, Midlothian, Mansfield & DeSoto, TX",
   /** Used in structured data for the wider service area. */
   schemaArea: "Dallas–Fort Worth",
-  serviceAreaLabel: "DeSoto, Cedar Hill, Lancaster, and the wider Dallas–Fort Worth area",
+  serviceAreaLabel: "Cedar Hill, Midlothian, Mansfield, DeSoto, and the rest of Dallas–Fort Worth",
 
   /**
    * Cities shown in the service-area section.
@@ -77,9 +77,10 @@ export const site = {
    * not a claim that a job was finished there. Add or remove freely.
    */
   cities: [
-    { name: "DeSoto" },
     { name: "Cedar Hill" },
-    { name: "Lancaster" },
+    { name: "Midlothian" },
+    { name: "Mansfield" },
+    { name: "DeSoto" },
     { name: "Dallas" },
     { name: "Duncanville" },
     { name: "Grand Prairie" },
@@ -90,7 +91,6 @@ export const site = {
     { name: "Richardson" },
     { name: "Plano" },
     { name: "Carrollton" },
-    { name: "Mansfield" },
     { name: "McKinney", role: "past" },
     { name: "Garland", role: "past" },
   ] as City[],
@@ -211,7 +211,7 @@ export const faqs = [
   {
     question: "Where do you work?",
     answer:
-      "DeSoto, Cedar Hill, Lancaster, and the wider Dallas–Fort Worth area. Past jobs also include work in McKinney and Garland.",
+      "Cedar Hill, Midlothian, Mansfield, DeSoto, and the rest of Dallas–Fort Worth. Past jobs also include work in McKinney and Garland.",
   },
   {
     question: "Who shows up?",
@@ -225,7 +225,7 @@ export const faqs = [
   {
     question: "What kind of projects do you take?",
     answer:
-      "Kitchen and bath remodels, whole-home remodels, interior and exterior paint, flooring and tile, siding, fencing, pergolas and decks, metal R-panel roofs, covers, and carports, windows and doors, and hardscape. On a remodel, the crew can also help with cabinetry, plumbing, electrical, and HVAC.",
+      "Kitchen and bath remodels, whole-home remodels, drywall, tile installation, micro cement, interior and exterior paint, flooring, siding, fencing, pergolas and decks, metal R-panel roofs, covers, and carports, windows and doors, framing, concrete, complete house demolition, and skid steer services. On a remodel, the crew can also help with cabinetry, plumbing, electrical, and HVAC.",
   },
   {
     question: "How do I get a price?",
@@ -243,7 +243,7 @@ export const services: Service[] = [
     summary: "Whole-home remodeling for homeowners who want one contractor on the job.",
     meta: "Complete house remodeling in Dallas & Fort Worth, TX by Jamestudio Construction. Insured, with a warranty. Call for a free estimate.",
     paragraphs: [
-      "A whole-home remodel is easier with one small crew on it from demo to the last detail. Jamestudio Construction takes that on for homeowners in DeSoto, Cedar Hill, Lancaster, and the wider Dallas–Fort Worth area.",
+      "A whole-home remodel is easier with one small crew on it from demo to the last detail. Jamestudio Construction takes that on for homeowners in Cedar Hill, Midlothian, Mansfield, DeSoto, and the rest of Dallas–Fort Worth.",
       "James and the crew handle the building work, and they can help with cabinetry, plumbing, electrical, and HVAC as part of the job. The company is insured and gives a warranty. Call or send the rooms you want redone.",
     ],
     includes: ["Kitchens and baths", "Flooring and paint", "Cabinetry help", "Plumbing, electrical, and HVAC help"],
@@ -386,9 +386,9 @@ export const services: Service[] = [
     seoName: "Metal Roofing",
     group: "Exterior",
     summary: "Metal R-panel roofs, patio covers, and carports.",
-    meta: "Metal roofing in DeSoto, Cedar Hill & Lancaster, TX. R-panel roofs, patio covers, and carports by Jamestudio Construction.",
+    meta: "Metal roofing in Cedar Hill, Midlothian, Mansfield & DeSoto, TX. R-panel roofs, patio covers, and carports by Jamestudio Construction.",
     paragraphs: [
-      "Jamestudio Construction installs metal roofing in DeSoto, Cedar Hill, Lancaster, and the wider Dallas–Fort Worth area, including R-panel roofs, patio covers, and carports.",
+      "Jamestudio Construction installs metal roofing in Cedar Hill, Midlothian, Mansfield, DeSoto, and the rest of Dallas–Fort Worth, including R-panel roofs, patio covers, and carports.",
       "Recent work includes a red R-panel shed roof, plus metal roofs on wood patio covers and on the houses those covers attach to. Shingle roofing is available too.",
     ],
     includes: ["R-panel roofs", "Patio covers", "Carports"],
@@ -448,9 +448,9 @@ export const services: Service[] = [
     seoName: "Flooring and Tile",
     group: "Remodels",
     summary: "Flooring and tile, including large-format porcelain.",
-    meta: "Flooring and tile in DeSoto, Cedar Hill & Lancaster, TX. Jamestudio Construction installs tile and flooring as part of a remodel. Free estimates.",
+    meta: "Flooring and tile in Cedar Hill, Midlothian, Mansfield & DeSoto, TX. Jamestudio Construction installs tile and flooring as part of a remodel. Free estimates.",
     paragraphs: [
-      "Flooring and tile are part of the remodel work Jamestudio Construction does for homeowners in DeSoto, Cedar Hill, Lancaster, and the wider Dallas–Fort Worth area.",
+      "Flooring and tile are part of the remodel work Jamestudio Construction does for homeowners in Cedar Hill, Midlothian, Mansfield, DeSoto, and the rest of Dallas–Fort Worth.",
       "Recent work includes large-format porcelain tile. Tell James the rooms and the material you have in mind. The company is insured and gives a warranty.",
     ],
   },
@@ -460,9 +460,9 @@ export const services: Service[] = [
     seoName: "Window and Door Replacement",
     group: "Exterior",
     summary: "New windows and exterior doors, including installs tied to siding work.",
-    meta: "Window and door replacement in DeSoto, Cedar Hill & Lancaster, TX by Jamestudio Construction. Free estimates across the Dallas–Fort Worth area.",
+    meta: "Window and door replacement in Cedar Hill, Midlothian, Mansfield & DeSoto, TX by Jamestudio Construction. Free estimates across the Dallas–Fort Worth area.",
     paragraphs: [
-      "Jamestudio Construction replaces windows and exterior doors for homeowners in DeSoto, Cedar Hill, Lancaster, and the wider Dallas–Fort Worth area.",
+      "Jamestudio Construction replaces windows and exterior doors for homeowners in Cedar Hill, Midlothian, Mansfield, DeSoto, and the rest of Dallas–Fort Worth.",
       "Recent work includes a new exterior door and windows set while new siding went on. The company is insured and gives a warranty.",
     ],
   },
@@ -472,12 +472,84 @@ export const services: Service[] = [
     seoName: "Hardscape and Stone",
     group: "Outdoor",
     summary: "Stone cladding, planters, walkways, and drainage around the house.",
-    meta: "Hardscape and stone work in DeSoto, Cedar Hill & Lancaster, TX. Planters, walkways, and drainage by Jamestudio Construction.",
+    meta: "Hardscape and stone work in Cedar Hill, Midlothian, Mansfield & DeSoto, TX. Planters, walkways, and drainage by Jamestudio Construction.",
     paragraphs: [
-      "Jamestudio Construction builds hardscape and stonework for homeowners in DeSoto, Cedar Hill, Lancaster, and the wider Dallas–Fort Worth area.",
+      "Jamestudio Construction builds hardscape and stonework for homeowners in Cedar Hill, Midlothian, Mansfield, DeSoto, and the rest of Dallas–Fort Worth.",
       "Recent work includes travertine walkways, stone planters, wall cladding, and trench drains. The company is insured and gives a warranty.",
     ],
     includes: ["Stone planters", "Walkways", "Wall cladding", "Drainage"],
+  },
+  {
+    slug: "drywall",
+    name: "Drywall",
+    seoName: "Drywall",
+    group: "Remodels",
+    summary: "Hanging and finishing drywall on remodels.",
+    meta: "Drywall in Cedar Hill, Midlothian, Mansfield & DeSoto, TX. Jamestudio Construction hangs and finishes drywall on remodels.",
+    paragraphs: [
+      "Jamestudio Construction hangs and finishes drywall on remodels in Cedar Hill, Midlothian, Mansfield, DeSoto, and the rest of Dallas–Fort Worth.",
+      "Recent whole-home work includes new drywall on bedrooms and arched openings. The company is insured and gives a warranty.",
+    ],
+  },
+  {
+    slug: "tile-installation",
+    name: "Tile Installation",
+    seoName: "Tile Installation",
+    group: "Remodels",
+    summary: "Tile on floors, walls, showers, and backsplashes.",
+    meta: "Tile installation in Cedar Hill, Midlothian, Mansfield & DeSoto, TX by Jamestudio Construction. Floors, walls, showers, and backsplashes.",
+    paragraphs: [
+      "Jamestudio Construction installs tile on floors, walls, showers, and backsplashes in Cedar Hill, Midlothian, Mansfield, DeSoto, and the rest of Dallas–Fort Worth.",
+      "Recent work includes shower tile, large-format floor tile, and a marble-look kitchen backsplash. The company is insured and gives a warranty.",
+    ],
+  },
+  {
+    slug: "micro-cement",
+    name: "Micro Cement",
+    seoName: "Micro Cement",
+    group: "Remodels",
+    summary: "Thin cement finishes for floors and walls.",
+    meta: "Micro cement in Cedar Hill, Midlothian, Mansfield & DeSoto, TX. Thin cement finishes for floors and walls by Jamestudio Construction.",
+    paragraphs: [
+      "Jamestudio Construction applies micro cement, a thin cement finish, on floors and walls in Cedar Hill, Midlothian, Mansfield, DeSoto, and the rest of Dallas–Fort Worth.",
+      "Tell James which rooms you want done. The company is insured and gives a warranty.",
+    ],
+  },
+  {
+    slug: "complete-house-demolition",
+    name: "Complete House Demolition",
+    seoName: "Complete House Demolition",
+    group: "Site Work",
+    summary: "Tearing down a house or outbuilding and hauling off the debris.",
+    meta: "Complete house demolition in Cedar Hill, Midlothian, Mansfield & DeSoto, TX by Jamestudio Construction.",
+    paragraphs: [
+      "Jamestudio Construction tears down houses and outbuildings and hauls off the debris in Cedar Hill, Midlothian, Mansfield, DeSoto, and the rest of Dallas–Fort Worth.",
+      "The company is insured and gives a warranty. Call or send the address and what needs to come down.",
+    ],
+  },
+  {
+    slug: "concrete",
+    name: "Concrete",
+    seoName: "Concrete",
+    group: "Site Work",
+    summary: "Concrete flatwork, including slabs, sidewalks, and pads.",
+    meta: "Concrete flatwork in Cedar Hill, Midlothian, Mansfield & DeSoto, TX. Slabs, sidewalks, and pads by Jamestudio Construction.",
+    paragraphs: [
+      "Jamestudio Construction pours concrete flatwork, including slabs, sidewalks, and pads, in Cedar Hill, Midlothian, Mansfield, DeSoto, and the rest of Dallas–Fort Worth.",
+      "Recent work includes patio slabs and a fresh sidewalk pour. The company is insured and gives a warranty.",
+    ],
+  },
+  {
+    slug: "skid-steer",
+    name: "Skid Steer Services",
+    seoName: "Skid Steer Services",
+    group: "Site Work",
+    summary: "Skid steer work for grading, cleanup, and moving material.",
+    meta: "Skid steer services in Cedar Hill, Midlothian, Mansfield & DeSoto, TX. Grading, cleanup, and material moving by Jamestudio Construction.",
+    paragraphs: [
+      "Jamestudio Construction uses a skid steer for grading, cleanup, and moving material on job sites in Cedar Hill, Midlothian, Mansfield, DeSoto, and the rest of Dallas–Fort Worth.",
+      "Tell James what the site needs. The company is insured and gives a warranty.",
+    ],
   },
 ];
 

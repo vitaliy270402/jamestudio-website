@@ -225,7 +225,7 @@ export const faqs = [
   {
     question: "What kind of projects do you take?",
     answer:
-      "Kitchen and bath remodels, whole-home remodels, drywall, tile installation, micro cement, interior and exterior paint, flooring, siding, fencing, pergolas and decks, metal R-panel roofs, covers, and carports, windows and doors, framing, concrete, complete house demolition, and skid steer services. On a remodel, the crew can also help with cabinetry, plumbing, electrical, and HVAC.",
+      "Kitchen and bath remodels, whole-home remodels, drywall, tile installation, micro cement, interior and exterior paint, flooring, siding, fencing, pergolas and decks, metal R-panel roofs, covers, and carports, windows and doors, framing, concrete, demolition, and skid steer services. On a remodel, the crew can also help with cabinetry, plumbing, electrical, and HVAC.",
   },
   {
     question: "How do I get a price?",
@@ -361,26 +361,30 @@ export const services: Service[] = [
   {
     slug: "siding",
     name: "Siding",
-    seoName: "Cedar & Exterior Siding",
+    seoName: "Siding",
     group: "Exterior",
-    summary: "Exterior siding, including cedar siding on dormers and additions.",
-    meta: "Cedar and exterior siding in Dallas & Fort Worth, TX. Jamestudio Construction installs siding, including cedar, across the Dallas and Fort Worth area.",
+    summary:
+      "Siding including Hardie board, LP SmartSide, cedar siding, or stucco, to make your home look fresh and protect it from harsh Texas weather.",
+    meta: "Siding in Cedar Hill, Midlothian, Mansfield & DeSoto, TX. Hardie board, LP SmartSide, cedar, and stucco by Jamestudio Construction.",
     paragraphs: [
-      "Jamestudio Construction installs siding for homeowners in the Dallas and Fort Worth area, including cedar siding.",
-      "Recent photos show cedar siding on a dormer, set next to a brick chimney and a shingle roof. The company is insured and gives a warranty.",
+      "Siding including Hardie board, LP SmartSide, cedar siding, or stucco, to make your home look fresh and protect it from harsh Texas weather.",
+      "Recent exterior work includes cedar siding and a stucco repair. The company is insured and gives a warranty.",
     ],
+    includes: ["Hardie board", "LP SmartSide", "Cedar siding", "Stucco"],
   },
   {
     slug: "framing",
-    name: "Framing",
-    seoName: "Framing",
+    name: "Wood Framing",
+    seoName: "Wood Framing",
     group: "Exterior",
-    summary: "Wood framing for covers, remodels, and the structure under the finish.",
-    meta: "Framing in Dallas & Fort Worth, TX. Wood framing for patios and remodels by Jamestudio Construction in the Dallas and Fort Worth area.",
+    summary:
+      "Wood framing for additions, remodels, structural beams, open-concept spaces, and layout changes.",
+    meta: "Wood framing in Cedar Hill, Midlothian, Mansfield & DeSoto, TX. Additions, remodels, beams, and layout changes by Jamestudio Construction.",
     paragraphs: [
-      "Framing is part of the work Jamestudio Construction does on remodels and outdoor covers in the Dallas and Fort Worth area.",
-      "Recent framing includes the posts and rafters under a patio cover, and the opened walls of a bathroom during a remodel.",
+      "Wood framing for additions, remodels, structural beams, open-concept spaces, and layout changes.",
+      "Recent framing includes the posts and rafters under a patio cover, and walls opened up during a remodel. The company is insured and gives a warranty.",
     ],
+    includes: ["Additions", "Remodels", "Structural beams", "Open-concept spaces", "Layout changes"],
   },
   {
     slug: "metal-roofing",
@@ -400,11 +404,11 @@ export const services: Service[] = [
     name: "Shingle Roofing",
     seoName: "Shingle Roofing",
     group: "Exterior",
-    summary: "Asphalt shingle roofs, including shingles tied into cedar siding.",
-    meta: "Shingle roofing in Dallas & Fort Worth, TX. Jamestudio Construction installs shingle roofs for homeowners in the Dallas and Fort Worth area.",
+    summary: "Asphalt shingle roofs.",
+    meta: "Shingle roofing in Cedar Hill, Midlothian, Mansfield & DeSoto, TX by Jamestudio Construction.",
     paragraphs: [
-      "Shingle roofing is part of the exterior work Jamestudio Construction does in the Dallas and Fort Worth area.",
-      "Recent photos show architectural shingles on a dormer finished with cedar siding, and shingles meeting a new metal patio roof. Metal roofing is available as well.",
+      "Jamestudio Construction installs asphalt shingle roofs in Cedar Hill, Midlothian, Mansfield, DeSoto, and the rest of Dallas–Fort Worth.",
+      "Recent work includes architectural shingles on a dormer and shingles meeting a new metal patio roof. The company is insured and gives a warranty.",
     ],
   },
   {
@@ -424,12 +428,13 @@ export const services: Service[] = [
     name: "Demolition",
     seoName: "Demolition",
     group: "Repairs",
-    summary: "Demolition that clears a room or a damaged area before the new work.",
-    meta: "Demolition in Dallas & Fort Worth, TX. Jamestudio Construction does demolition for remodels and repairs across the Dallas and Fort Worth area.",
+    summary: "Interior demolition before a remodel, or complete structure removal.",
+    meta: "Demolition in Cedar Hill, Midlothian, Mansfield & DeSoto, TX. Interior demo and complete structure removal by Jamestudio Construction.",
     paragraphs: [
-      "Demolition is part of the remodel and repair work Jamestudio Construction does in the Dallas and Fort Worth area.",
-      "On a recent bathroom, the old finishes came out before the new tub and tile. Water-damage jobs can include demo as well, along with extraction, drying, and moisture monitoring.",
+      "Interior demolition before a remodel, or complete structure removal.",
+      "On a recent bathroom, the old finishes came out before the new tub and tile. Jamestudio Construction also tears down houses and outbuildings and hauls off the debris. The company is insured and gives a warranty.",
     ],
+    includes: ["Interior demolition", "Complete structure removal"],
   },
   {
     slug: "water-damage",
@@ -461,13 +466,13 @@ export const services: Service[] = [
   {
     slug: "windows-and-doors",
     name: "Windows & Doors",
-    seoName: "Window and Door Replacement",
+    seoName: "New Window and Door Installation",
     group: "Exterior",
-    summary: "New windows and exterior doors, including installs tied to siding work.",
-    meta: "Window and door replacement in Cedar Hill, Midlothian, Mansfield & DeSoto, TX by Jamestudio Construction. Free estimates across the Dallas–Fort Worth area.",
+    summary: "New window and door installation.",
+    meta: "New window and door installation in Cedar Hill, Midlothian, Mansfield & DeSoto, TX by Jamestudio Construction.",
     paragraphs: [
-      "Jamestudio Construction replaces windows and exterior doors for homeowners in Cedar Hill, Midlothian, Mansfield, DeSoto, and the rest of Dallas–Fort Worth.",
-      "Recent work includes a new exterior door and windows set while new siding went on. The company is insured and gives a warranty.",
+      "Jamestudio Construction installs new windows and doors in Cedar Hill, Midlothian, Mansfield, DeSoto, and the rest of Dallas–Fort Worth.",
+      "Recent work includes a new exterior door and new windows. The company is insured and gives a warranty.",
     ],
   },
   {
@@ -517,18 +522,6 @@ export const services: Service[] = [
     paragraphs: [
       "Jamestudio Construction applies micro cement, a thin cement finish, on floors and walls in Cedar Hill, Midlothian, Mansfield, DeSoto, and the rest of Dallas–Fort Worth.",
       "Tell James which rooms you want done. The company is insured and gives a warranty.",
-    ],
-  },
-  {
-    slug: "complete-house-demolition",
-    name: "Complete House Demolition",
-    seoName: "Complete House Demolition",
-    group: "Site Work",
-    summary: "Tearing down a house or outbuilding and hauling off the debris.",
-    meta: "Complete house demolition in Cedar Hill, Midlothian, Mansfield & DeSoto, TX by Jamestudio Construction.",
-    paragraphs: [
-      "Jamestudio Construction tears down houses and outbuildings and hauls off the debris in Cedar Hill, Midlothian, Mansfield, DeSoto, and the rest of Dallas–Fort Worth.",
-      "The company is insured and gives a warranty. Call or send the address and what needs to come down.",
     ],
   },
   {

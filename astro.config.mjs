@@ -12,6 +12,7 @@ export default defineConfig({
   redirects: {
     "/services/concrete-patio-slabs": "/services/concrete-work/",
     "/services/concrete": "/services/concrete-work/",
+    "/services/complete-house-demolition": "/services/demolition/",
   },
   integrations: [
     sitemap({
